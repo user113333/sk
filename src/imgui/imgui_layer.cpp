@@ -13,7 +13,7 @@ namespace imgui_layer {
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-        io.IniFilename = nullptr;
+        // io.IniFilename = nullptr;
 
         ImGui::StyleColorsClassic();
 
@@ -28,7 +28,8 @@ namespace imgui_layer {
         ImGui_ImplRaylib_ProcessEvent();
         ImGui_ImplRaylib_NewFrame();
         ImGui::NewFrame();
-            
+
+        ImGui::ShowDemoWindow();
         ui::update();
         modal::update();
 
@@ -41,6 +42,11 @@ namespace imgui_layer {
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplRaylib_Shutdown();
         ImGui::DestroyContext();
+    }
+
+    bool mouse_locked() {
+        ImGuiIO& io = ImGui::GetIO();
+        return io.WantCaptureMouse;
     }
 
 }

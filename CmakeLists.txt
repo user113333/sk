@@ -2,9 +2,11 @@
 project(sk)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_SUPPRESS_REGENERATION ON)
 
 set(RAYLIB_INCLUDE_DIRS "lib/raylib/src/external")
 set(IMGUI_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/lib/imgui")
+set(GLM_INCLUDE_DIRS "lib/glm/glm")
 
 file(GLOB IMGUI_SOURCES ${CMAKE_CURRENT_SOURCE_DIR} "lib/imgui/*.cpp")
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")
@@ -16,6 +18,7 @@ include_directories(
     "src/"
     ${IMGUI_INCLUDE_DIRS}
     ${RAYLIB_INCLUDE_DIRS}
+    ${GLM_INCLUDE_DIRS}
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

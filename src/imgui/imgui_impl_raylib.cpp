@@ -232,12 +232,7 @@ bool ImGui_ImplRaylib_ProcessEvent()
     ImGuiIO& io = ImGui::GetIO();
 
     FOR_ALL_KEYS(SET_KEY_DOWN);
-
-    // Uncomment the three lines below if using raylib earlier than version 3.
-    //if (GetKeyPressed() != -1)
-    //{
-        io.AddInputCharacter(GetKeyPressed());
-    //}
+    io.AddInputCharacter(GetCharPressed());
 
     return true;
 }

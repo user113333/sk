@@ -4,3 +4,6 @@
 [submodule "lib/raylib"]
 	path = lib/raylib
 	url = https://github.com/raysan5/raylib
+[submodule "lib/glm"]
+	path = lib/glm
+	url = https://github.com/g-truc/glm
