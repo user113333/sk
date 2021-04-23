@@ -1,5 +1,6 @@
 #include "mouse.h"
 
+#include <cstdlib>
 #include <raylib.h>
 
 #include "imgui/imgui_layer.h"
@@ -9,10 +10,14 @@ namespace mouse {
     
     static glm::vec2 pressed;
     static glm::vec2 current;
+    static glm::vec2 prev;
 
     void update() {
-        current.x = GetMousePosition().x;
-        current.y = GetMousePosition().y;
+        prev.x = current.x;
+        prev.y = current.y;
+
+        current.x = GetMousePosition().x + camera::camera.target.x;
+        current.y = GetMousePosition().y + camera::camera.target.y;
 
         current.x -= camera::camera.offset.x;
         current.y -= camera::camera.offset.y;
@@ -35,7 +40,7 @@ namespace mouse {
     }
 
     glm::vec2 pos_delta() {
-        return current - pressed;
+        return current - prev;
     }
 
     glm::vec4 select_rect() {

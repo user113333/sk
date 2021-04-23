@@ -2,11 +2,8 @@
 
 #include "imgui/imgui_layer.h"
 #include "editor/editor.h"
-#include "util/mouse.h"
-#include "util/camera.h"
-
-Texture2D texture_point;
-Font font_main;
+#include "util/util.h"
+#include "core.h"
 
 int main(int, char**) {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);

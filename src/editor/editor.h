@@ -2,12 +2,13 @@
 
 #include <raylib.h>
 
-#include "animation.h"
+#include "animation_t.h"
 
 namespace editor {
     void initialize();
     void update();
     void render();
+    void imgui();
     void destroy();
 
     void new_point();
@@ -18,12 +19,14 @@ namespace editor {
     void delete_animation(int index);
 
     void create_new();
-    void import_file();
-    void export_file();
+    void import_file(char* str);
+    void export_file(char* str);
+    char* get_file_open();
 
     void select_animation(int index);
-    int get_animations_selected();
     animation_t* get_animation();
-    void* get_animations();
-    int* get_view();
+
+    // VARS
+    inline bool precise_select = true;
+    inline int view = 1;
 }

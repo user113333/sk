@@ -1,6 +1,8 @@
-#include "imgui.h"
-#include "imgui/imgui_impl_raylib.h"
-#include "imgui/imgui_impl_opengl3.h"
+#include <imgui.h>
+#include <imgui/imgui_impl_raylib.h>
+#include <imgui/imgui_impl_opengl3.h>
+
+#include <imgui_internal.h>
 
 #include "modal.h"
 #include "ui/ui.h"
@@ -9,11 +11,10 @@ namespace imgui_layer {
 
     void initialize() {
         IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
+        ImGuiContext* g = ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-        // io.IniFilename = nullptr;
 
         ImGui::StyleColorsClassic();
 
@@ -29,7 +30,6 @@ namespace imgui_layer {
         ImGui_ImplRaylib_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::ShowDemoWindow();
         ui::update();
         modal::update();
 

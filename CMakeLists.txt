@@ -7,12 +7,17 @@ set(CMAKE_SUPPRESS_REGENERATION ON)
 set(RAYLIB_INCLUDE_DIRS "lib/raylib/src/external")
 set(IMGUI_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/lib/imgui")
 set(GLM_INCLUDE_DIRS "lib/glm/glm")
+set(LIBS "raylib")
 
 file(GLOB IMGUI_SOURCES ${CMAKE_CURRENT_SOURCE_DIR} "lib/imgui/*.cpp")
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")
 set(SOURCES ${SOURCES} ${IMGUI_SOURCES})
 
 add_subdirectory(lib/raylib)
+
+if (WIN32)
+    set(LIBS ${LIBS} imm32)
+endif ()
 
 include_directories(
     "src/"
@@ -22,7 +27,7 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} raylib imm32)
+target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     # target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -pedantic)
