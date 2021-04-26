@@ -20,6 +20,6 @@ void vector2d_remove_n(struct vector2d_t* vector2d, int index);
 void vector2d_pop_m(struct vector2d_t* vector2d);
 void vector2d_pop_n(struct vector2d_t* vector2d);
 void vector2d_clear(struct vector2d_t* vector2d);
-void vector2d_free(struct vector2d_t* vector);
+void vector2d_free(struct vector2d_t* vector2d);
 
 #endif // VECTOR2D_H

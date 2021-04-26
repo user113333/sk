@@ -65,6 +65,7 @@ namespace ui {
                 if (ImGui::MenuItem("New Point", "CTRL+SPACE")) { editor::new_point(); }
                 if (ImGui::MenuItem("New Frame")) { editor::new_frame(); }
                 if (ImGui::MenuItem("New Animation")) { editor::new_animation(); }
+                if (ImGui::MenuItem("New Sprite")) { editor::new_sprite(); }
 
                 ImGui::Separator();
 

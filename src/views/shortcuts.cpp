@@ -42,7 +42,7 @@ namespace shortcuts {
             editor::get_animation()->clipboard_copy();
         }
 
-        if (PRESSED(KEY_P)) {
+        if (PRESSED(KEY_V)) {
             editor::get_animation()->clipboard_paste();
         }
 

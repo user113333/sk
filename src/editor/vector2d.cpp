@@ -63,9 +63,9 @@ void vector2d_clear(struct vector2d_t* vector2d) {
     vector2d->count_n = 0;
 }
 
-void vector2d_free(struct vector2d_t* vector) {
-    vector->count_m = 0;
-    vector->count_n = 0;
-    free(vector->data);
-    free(vector);
+void vector2d_free(struct vector2d_t* vector2d) {
+    vector2d = 0;
+    vector2d->count_n = 0;
+    free(vector2d->data);
+    free(vector2d);
 }

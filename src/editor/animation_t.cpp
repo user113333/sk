@@ -8,8 +8,10 @@
 #include "editor.h"
 #include "util/util.h"
 #include "core.h"
+#include "views/views.h"
 
 static glm::vec3 point_null = { 0, 0, 0 };
+static int count_m = 0;
 
 // ========== CONSTRUCTS ==========
 
@@ -29,11 +31,14 @@ char* animation_t::get_name() {
 // ========== POINTS ==========
 
 void animation_t::point_push_back(glm::vec3 point) {
+    vector->count_m = count_m;
     vector2d_push_back_m(vector, &point);
+    count_m++;
 }
 
 void animation_t::point_remove(int index) {
     vector2d_remove_m(vector, index);
+    count_m--;
 }
 
 glm::vec3* animation_t::point_get(int index) {
@@ -41,7 +46,8 @@ glm::vec3* animation_t::point_get(int index) {
 }
 
 int animation_t::point_count() {
-    return vector->count_m;
+    // return vector->count_m;
+    return count_m;
 }
 
 // ========== FRAMES ==========
@@ -54,7 +60,7 @@ void animation_t::frame_push_back() {
         return;
     }
 
-    for (int i = 0; i < vector->count_m; i++) {
+    for (int i = 0; i < point_count(); i++) {
         glm::vec3* point1 = (glm::vec3*)vector2d_get(vector, i, vector->count_n - 1);
         glm::vec3* point2 = (glm::vec3*)vector2d_get(vector, i, vector->count_n - 2);
         memcpy(point1, point2, vector->item_size);
@@ -94,7 +100,7 @@ void animation_t::selection_delete() {
     std::reverse(selection.begin(), selection.end());
     
     for (int i = 0; i < selection.size(); i++) {
-        vector2d_remove_m(vector, selection[i]);
+        point_remove(selection[i]);
     }
 
     selection.clear();
@@ -122,6 +128,28 @@ int animation_t::selection_size() {
     return selection.size();
 }
 
+// ========== FOREGROUND ==========
+
+void animation_t::foreground_push_back() {
+    foreground.add_sprite();
+}
+
+void animation_t::foreground_load(const char* foreground_path, unsigned int x, unsigned int y) {
+    foreground.initialize(foreground_path, x, y);
+}
+
+void animation_t::foreground_render() {
+    foreground.render(vector, current_frame, 0.0, foreground::rotation, foreground::scale);
+}
+
+void animation_t::foreground_imgui() {
+    foreground.render_imgui(count_m);
+}
+
+void animation_t::foreground_sprites_imgui() {
+    foreground.render_sprites_imgui(count_m);
+}
+
 // ========== UPDATES ==========
 
 void animation_t::update_select() {
@@ -138,7 +166,7 @@ void animation_t::update_select() {
         selection.clear();
     }
 
-    for (int i = 0; i < vector->count_m; i++) {
+    for (int i = 0; i < point_count(); i++) {
         glm::vec3* point = point_get(i);
         if (point->x > select.x && point->x < select.x + select.z && point->y > select.y && point->y < select.y + select.w) {
             selection.push_back(i);
@@ -148,7 +176,7 @@ void animation_t::update_select() {
 
 void animation_t::update() {
     animation_t* animation = editor::get_animation();
-        
+
     if (IsKeyDown(KEY_LEFT_CONTROL)) {
         if (mouse::is_down() && !mouse::is_locked()) {
             animation->update_move(animation_all_frames);
@@ -184,7 +212,7 @@ void animation_t::update_move_z(bool animation_all_frames) {
 void animation_t::render_points() {
     char str[10];
 
-    for (int i = 0; i < vector->count_m; i++) {
+    for (int i = 0; i < point_count(); i++) {
         util::itoa(str, i);
         glm::vec3* point = point_get(i);
         DrawTexture(texture_point, point->x - texture_point.width / 2, point->y - texture_point.height / 2, selection_contains(i) ? COLOR_PRIMARY : COLOR_WHITE);
@@ -215,7 +243,7 @@ void animation_t::render_imgui_points() {
     ImGui::Text("Points: ");
     static int selected_1 = 0;
     if (ImGui::BeginListBox("Points", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
-        for (int i = 0; i < vector->count_m; i++) {
+        for (int i = 0; i < point_count(); i++) {
             bool is_selected = selected_1 == i;
             glm::vec3* point = point_get(i);
             

@@ -16,3 +16,11 @@ void points_render() {
 void frames_imgui() {
     editor::get_animation()->render_imgui_frames();
 }
+
+void foreground_imgui() {
+    editor::get_animation()->foreground_imgui();
+}
+
+void foreground_sprites_imgui() {
+    editor::get_animation()->foreground_sprites_imgui();
+}

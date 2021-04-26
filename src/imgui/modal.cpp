@@ -29,7 +29,7 @@ namespace modal {
             ImGui::OpenPopup("Modal window");
         }
 
-        ImGui::SetNextWindowSizeConstraints({500, 0}, { 500, 500 });
+        ImGui::SetNextWindowSizeConstraints({ 500, 0 }, { 500, 500 });
         ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
         if (ImGui::BeginPopupModal("Modal window", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove)) {
             if (open_modal & 0b010) {

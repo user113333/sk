@@ -42,6 +42,8 @@ namespace editor {
         DrawRectangle(-2, -8, 4, 16, COLOR_WHITE50);
         DrawRectangle(-8, -2, 16, 4, COLOR_WHITE50);
 
+        animations[animations_selected]->foreground_render();
+
         VIEWS_RENDER(view);
     }
 
@@ -125,6 +127,10 @@ namespace editor {
     void new_animation() {
         animations_selected = animations.size();
         animations.push_back(new animation_t);
+    }
+
+    void new_sprite() {
+        get_animation()->foreground_push_back();
     }
 
     void delete_point(int index) {

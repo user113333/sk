@@ -14,6 +14,7 @@ namespace editor {
     void new_point();
     void new_frame();
     void new_animation();
+    void new_sprite();
     void delete_point(int index);
     void delete_frame(int index);
     void delete_animation(int index);

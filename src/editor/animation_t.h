@@ -4,6 +4,7 @@
 #include "vector2d.h"
 #include <vec3.hpp>
 #include <vec4.hpp>
+#include "foreground_t.h"
 
 #define ANIMATION_NAME_LENGTH 50
 
@@ -34,6 +35,12 @@ public:
     bool selection_is_empty();
     int selection_size();
 
+    void foreground_push_back();
+    void foreground_load(const char* foreground_path, unsigned int x, unsigned int y);
+    void foreground_render();
+    void foreground_imgui();
+    void foreground_sprites_imgui();
+
     void update();
     private:
     void update_select();
@@ -53,4 +60,5 @@ private:
     vector2d_t* vector;
     std::vector<int> selection;
     int current_frame = 0;
+    foreground_t foreground;
 };

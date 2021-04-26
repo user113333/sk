@@ -1,5 +1,8 @@
 #include <cstring>
 
+#include <vec3.hpp>
+#include <cmath>
+
 namespace util {
 
     void strreverse(char* str) {
@@ -32,6 +35,18 @@ namespace util {
 
         str[i++] = '\0';
         strreverse(str);
+    }
+
+    void rotate_y(glm::vec3* point, float rotation) {
+        point->x = point->x * cos(rotation) + point->z * sin(rotation);
+        point->y = point->y;
+        point->z = -point->x * sin(rotation) + point->z * cos(rotation);
+    }
+
+    void rotate_x(glm::vec3* point, float rotation) {
+        point->x = point->x;
+        point->y = point->y * cos(rotation) - point->z * sin(rotation);
+        point->z = point->y * sin(rotation) + point->z * cos(rotation);
     }
 
 }

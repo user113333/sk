@@ -2,6 +2,7 @@
 
 #include "settings.h"
 #include "shortcuts.h"
+#include "foreground.h"
 
 #define VIEWS_UPDATE(X) if (views[X].update != nullptr) views[X].update()
 #define VIEWS_RENDER(X) if (views[X].render != nullptr) views[X].render()
@@ -25,12 +26,18 @@ struct view_t {
 void points_imgui();
 void points_update();
 void points_render();
+
 void frames_imgui();
+
+void foreground_imgui();
+void foreground_sprites_imgui();
 
 inline window_t windows[] = {
     { "Master window", editor::imgui },
     { "Points window", points_imgui },
     { "Frames window", frames_imgui },
+    { "Foreground window", foreground_imgui },
+    { "Sprites window", foreground_sprites_imgui },
 
     { "Settings window", settings::imgui, true, false },
     { "Shortcuts window", shortcuts::imgui, false, false }
@@ -40,7 +47,7 @@ inline view_t views[] {
     { "Master view", nullptr, nullptr },
     { "Points view", points_update, points_render },
     { "Z oreder view", nullptr, nullptr },
-    { "Foreground view", nullptr, nullptr },
+    { "Foreground view", foreground::update, nullptr },
     { "Ground view", nullptr, nullptr },
     { "Background view", nullptr, nullptr }
 };
