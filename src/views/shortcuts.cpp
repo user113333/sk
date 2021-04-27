@@ -47,12 +47,12 @@ namespace shortcuts {
         }
 
         if (PRESSED(KEY_O)) {
-            modal::open("Import file path: ", "out", editor::import_file);
+            modal::open("Import file path: ", "out", editor::import_file, MODAL_TYPE_FILE_OPEN);
         }
 
         if (PRESSED(KEY_S)) {
             if (editor::get_file_open()[0] == '\0') {
-                modal::open("Export file path: ", "out", editor::export_file);
+                modal::open("Export file path: ", "out", editor::export_file, MODAL_TYPE_FILE_SAVE);
             }
         }
     }

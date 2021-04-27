@@ -60,5 +60,5 @@ private:
     vector2d_t* vector;
     std::vector<int> selection;
     int current_frame = 0;
-    foreground_t foreground;
+    static inline foreground_t foreground;
 };

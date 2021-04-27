@@ -3,9 +3,13 @@
 #include <raylib.h>
 #include <imgui.h>
 
+#include <cstring>
+#include <cmath>
+
 #include "editor.h"
 #include "util/util.h"
 #include "foreground_dest.h"
+#include "views/foreground.h"
 
 static Texture2D texture;
 static float texture_size_x = 0;
@@ -13,10 +17,14 @@ static float texture_size_y = 0;
 static foreground_dest_t dest;
 
 void foreground_t::initialize(const char* path, unsigned int x, unsigned int y) {
+    char str[100];
+    strcpy(str, path);
+    editor::file_prepend_path(str);
+
     texture_size_x = x;
     texture_size_y = y;
 
-    texture = LoadTexture(path);
+    texture = LoadTexture(str);
 
     dest.texture_size_x = x;
     dest.texture_size_y = y;
@@ -28,8 +36,12 @@ void foreground_t::add_sprite() {
 }
 
 void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotation_y, float scale) {
-    float src_x = texture.width / texture_size_x;
+    float src_x = 0;
     float src_y = 0;
+    float src_width = texture_size_x;
+    float src_height = texture_size_y;
+    float dest_width = src_width * scale;
+    float dest_height = src_height * scale;
     int n_next = n + 1;
 
     if (vector2d->count_n == n_next) {
@@ -42,6 +54,7 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
 
     for (int i = 0; i < sprites.size(); i++) {
         src_y = sprites[i].foreground_y * texture_size_y;
+        dest_height = src_height * scale;
         
         dest.ratio = sprites[i].ratio;
         dest.a = *(glm::vec3*)vector2d_get(vector2d, sprites[i].point_a, n);
@@ -49,15 +62,22 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
         dest.a_next = *(glm::vec3*)vector2d_get(vector2d, sprites[i].point_a, n_next);
         dest.b_next = *(glm::vec3*)vector2d_get(vector2d, sprites[i].point_b, n_next);
 
+        util::rotate_y(&dest.a, dest.rotation_y);
+        util::rotate_y(&dest.b, dest.rotation_y);
+
+        float hypot = hypotf(dest.a.x - dest.b.x, dest.a.y - dest.b.y);
+        if (sprites[i].point_a != sprites[i].point_b && (src_height * scale > hypot)) {
+            dest_height = hypot;
+        }
+
         glm::vec3 p = foreground_calc_dest(&dest);
 
-        DrawTextureTiled(
+        DrawTexturePro(
             texture,
-            { src_x, src_y, texture_size_x, texture_size_x },
-            { p.x, p.y, texture_size_x, texture_size_y },
-            { texture_size_x / 2, texture_size_y / 2 },
-            foreground_calc_rotation(&dest),
-            1.0,
+            { src_x, src_y, src_width, src_height },
+            { p.x, p.y, dest_width, dest_height },
+            { dest_width / 2, dest_height / 2 },
+            sprites[i].point_a == sprites[i].point_b ? 0 : foreground_calc_rotation(&dest),
             WHITE
         );
     }
@@ -66,15 +86,42 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
 static int selected = -1;
 void foreground_t::render_imgui(int count_m) {
     // static char str[50] = "foreground.png";
-    static char str[50] = "res/point.png";
+    static char str[50] = "res/test.png";
+    static char str_path[100];
     static int sprite_width = 16;
     static int sprite_height = 16;
     
+    ImGui::DragFloat("scale", &foreground::scale, 0.01, 0, 100, "%0.2f");
+    ImGui::DragFloat("rotation", &foreground::rotation, 0.02, 0, 0, "%0.2f");
+    ImGui::Separator();
+    ImGui::Text("Load Foreground");
     ImGui::InputText("\".png\" File path", str, IM_ARRAYSIZE(str));
-    ImGui::DragInt("Sprite width", &sprite_width, 1, 0, INT_MAX);
-    ImGui::DragInt("Sprite height", &sprite_height, 1, 0, INT_MAX);
 
-    if (ImGui::Button("Load foreground [Enter]") || (IsKeyPressed(KEY_ENTER) && ImGui::IsWindowFocused())) {
+    if (IsKeyPressed(KEY_ENTER) && ImGui::IsItemFocused()) {
+        initialize(str, sprite_width, sprite_height);
+    }
+
+    if (editor::file_is_open()) {
+        static ImVec4 col = { 255, 255, 255, 255 };
+        strcpy(str_path, str);
+        editor::file_prepend_path(str_path);
+        
+        if (ImGui::IsItemFocused()) {
+            if (!fs::is_directory(str_path) && fs::is_file(str_path))
+                col = { 0, 255, 0, 255 };
+            else
+                col = { 255, 0, 0, 255 };
+        }
+            
+        ImGui::TextColored(col, "%s", str_path);
+    } else {
+        ImGui::TextColored({ 255, 0, 0, 255 }, "%s -> relative to exe", str);
+    }
+    
+    ImGui::DragInt("Sprite width", &sprite_width, 1, 0, INT16_MAX);
+    ImGui::DragInt("Sprite height", &sprite_height, 1, 0, INT16_MAX);
+
+    if (ImGui::Button("Load foreground [Enter]")) {
         initialize(str, sprite_width, sprite_height);
     }
 
@@ -140,6 +187,10 @@ void foreground_t::render_imgui(int count_m) {
 void foreground_t::render_sprites_imgui(int count_m) {
     static char str[10];
 
+    if (ImGui::Button("Add sprite")) {
+        add_sprite();
+    }
+
     ImGui::Text("Sprites: ");
     if (ImGui::BeginListBox("Sprites", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
         for (int i = 0; i < sprites.size(); i++) {
@@ -177,7 +228,7 @@ void foreground_t::render_sprites_imgui(int count_m) {
     }
 
     sprite_t& sprite = sprites.at(selected);
-    ImGui::SliderInt("foreground_y", &sprite.foreground_y, 0, texture.width == 0 ? 0 : texture.width / texture_size_x - 1);
+    ImGui::SliderInt("foreground_y", &sprite.foreground_y, 0, texture.height == 0 ? 0 : texture.height / texture_size_y - 1);
     ImGui::SliderFloat("ratio (-1 = static)", &sprite.ratio, 0, 1);
     ImGui::SliderInt("point_a", &sprite.point_a, 0, count_m == 0 ? 0 : count_m - 1);
     ImGui::SliderInt("point_b", &sprite.point_b, 0, count_m == 0 ? 0 : count_m - 1);

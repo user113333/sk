@@ -22,10 +22,10 @@ namespace ui {
 
         if (ImGui::BeginMainMenuBar()) {
             if (ImGui::BeginMenu("File")) {
-                if (ImGui::MenuItem("New")) { modal::open("All the unsaved changes will be lost! Are you sure you want to continue?", editor::create_new); }
+                if (ImGui::MenuItem("New")) { modal::open("All the unsaved changes will be lost! Are you sure you want to continue?", "", editor::create_new, MODAL_TYPE_MESSAGE); }
                 ImGui::Separator();
-                if (ImGui::MenuItem("Open..", "CTRL+O")) { modal::open("Import file path: ", "out", editor::import_file); }
-                if (ImGui::MenuItem("Save..", "CTRL+S")) { modal::open("Export file path: ", "out", editor::export_file); }
+                if (ImGui::MenuItem("Open..", "CTRL+O")) { modal::open("Import file path: ", "out", editor::import_file, MODAL_TYPE_FILE_OPEN); }
+                if (ImGui::MenuItem("Save..", "CTRL+S")) { modal::open("Export file path: ", "out", editor::export_file, MODAL_TYPE_FILE_SAVE); }
 
                 ImGui::EndMenu();
             }

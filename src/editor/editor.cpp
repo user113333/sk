@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <cstring>
+#include <sstream>
 
 #include "core.h"
 #include "views/views.h"
@@ -15,7 +16,7 @@ namespace editor {
 
     static std::vector<animation_t*> animations;
     static int animations_selected = 0;
-    static char file_open[100];
+    static char file_open[100] = "";
 
     // ========== UPDATES ==========
 
@@ -29,7 +30,7 @@ namespace editor {
         char str[50];
         strcpy(str, "sk - ");
         strcat(str, file_open);
-        SetWindowTitle(file_open[0] != '\0' ? str : "sk");
+        SetWindowTitle(file_is_open() ? str : "sk");
 
         VIEWS_UPDATE(view);
     }
@@ -151,7 +152,23 @@ namespace editor {
 
     // ========== FILE ==========
 
-    void create_new() {
+    bool file_is_open() {
+        return file_open[0] != 0;
+    }
+
+    void file_prepend_path(char* str) {
+        // TODO: optimize (temp code)
+        static char temp[100] = "";
+
+        int pos = fs::get_dir(file_open);
+        pos++;
+        strncpy(temp, file_open, pos);
+        temp[pos] = '\0';
+        strcat(temp, str);
+        strcpy(str, temp);
+    }
+
+    void create_new(char* str) {
         animations.clear();
         new_animation();
     }

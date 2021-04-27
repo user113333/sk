@@ -34,7 +34,5 @@ glm::vec3 foreground_calc_dest(foreground_dest_t* dest) {
     dest->a.y = y;
     dest->a.z = z;
 
-    util::rotate_y(&dest->a, dest->rotation_y);
-
     return { dest->a.x, dest->a.y, dest->a.z };
 }

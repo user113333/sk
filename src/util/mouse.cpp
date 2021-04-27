@@ -48,4 +48,8 @@ namespace mouse {
         return { (select_size.x > 0 ? pressed.x : pressed.x + select_size.x), (select_size.y > 0 ? pressed.y : pressed.y + select_size.y), abs(select_size.x), abs(select_size.y)};
     }
 
+    float scroll_delta() {
+        return GetMouseWheelMove();
+    }
+
 }

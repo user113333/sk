@@ -3,6 +3,7 @@
 #include "util/camera.h"
 #include "util/clipboard.h"
 #include "util/mouse.h"
+#include "util/fs.h"
 
 #include <vec3.hpp>
 

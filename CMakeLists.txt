@@ -4,6 +4,7 @@ project(sk)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_SUPPRESS_REGENERATION ON)
 
+set(PFD_INCLUDE_DIRS "lib/portable-file-dialogs")
 set(RAYLIB_INCLUDE_DIRS "lib/raylib/src/external")
 set(IMGUI_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/lib/imgui")
 set(GLM_INCLUDE_DIRS "lib/glm/glm")
@@ -24,6 +25,7 @@ include_directories(
     ${IMGUI_INCLUDE_DIRS}
     ${RAYLIB_INCLUDE_DIRS}
     ${GLM_INCLUDE_DIRS}
+    ${PFD_INCLUDE_DIRS}
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

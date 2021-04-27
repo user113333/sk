@@ -19,7 +19,10 @@ namespace editor {
     void delete_frame(int index);
     void delete_animation(int index);
 
-    void create_new();
+    bool file_is_open();
+    void file_prepend_path(char* str);
+    
+    void create_new(char* str);
     void import_file(char* str);
     void export_file(char* str);
     char* get_file_open();

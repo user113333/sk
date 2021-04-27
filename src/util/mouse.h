@@ -14,4 +14,6 @@ namespace mouse {
     glm::vec2 pos_delta();
     glm::vec4 select_rect();
 
+    float scroll_delta();
+
 }
