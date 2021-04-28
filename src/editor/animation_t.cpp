@@ -9,7 +9,6 @@
 #include "util/util.h"
 #include "core.h"
 #include "views/views.h"
-#include "imgui/slider_ex.h"
 
 static glm::vec3 point_null = { 0, 0, 0 };
 static int count_m = 0;
@@ -367,9 +366,6 @@ void animation_t::render_imgui_points() {
     }
 
     ImGui::Text("Point[%d] properties: ", point_selected_id);
-    
-    SliderScalar3D("", &point_selected->x, &point_selected->y, &point_selected->z, -300, 300, -300, 300, -300, 300, 1);
-    
     ImGui::DragFloat("x", &point_selected->x, 1, 0, 0, "%0.1f");
     ImGui::DragFloat("y", &point_selected->y, 1, 0, 0, "%0.1f");
     ImGui::DragFloat("z", &point_selected->z, 1, 0, 0, "%0.1f");
