@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <raylib.h>
 
-#include "portable-file-dialogs.h"
+#include "sfd/sfd.h"
 
 namespace modal {
 
@@ -60,27 +60,27 @@ namespace modal {
                     bool btn = ImGui::Button("..");
                     
                     if (btn && open_modal & MODAL_TYPE_FILE_OPEN) {
-                        auto f = pfd::open_file(
-                            "Choose file to read",
-                            "", // PATH
-                            { "All Files", "*" },
-                            pfd::opt::force_path);
+                        sfd_Options opt = {
+                            .title        = "Choose file to read",
+                            .filter_name  = "",
+                            .filter       = "All Files",
+                        };
 
-                        auto res = f.result();
-                        if (res.size() > 0) {
-                            strcpy(str1, res[0].c_str());
+                        const char *filename = sfd_open_dialog(&opt);
+                        if (filename != nullptr) {
+                            strcpy(str1, filename);
                         }
                     }
 
                     if (btn && open_modal & MODAL_TYPE_FILE_SAVE) {
-                        auto f = pfd::save_file(
-                            "Choose file to save",
-                            "", // PATH
-                            { "All Files", "*" },
-                            true);
+                        sfd_Options opt = {
+                            .title        = "Choose file to save",
+                        };
 
-                        auto res = f.result();
-                        strcpy(str1, res.c_str());
+                        const char *filename = sfd_save_dialog(&opt);
+                        if (filename != nullptr) {
+                            strcpy(str1, filename);
+                        }
                     }
 
                     ImGui::SameLine(0);
