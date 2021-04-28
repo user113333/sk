@@ -32,12 +32,16 @@ void frames_imgui();
 void foreground_imgui();
 void foreground_sprites_imgui();
 
+void ground_update();
+void ground_imgui();
+
 inline window_t windows[] = {
     { "Master window", editor::imgui },
     { "Points window", points_imgui },
     { "Frames window", frames_imgui },
     { "Foreground window", foreground_imgui },
     { "Sprites window", foreground_sprites_imgui },
+    { "Ground window", ground_imgui },
 
     { "Settings window", settings::imgui, true, false },
     { "Shortcuts window", shortcuts::imgui, false, false }
@@ -48,6 +52,6 @@ inline view_t views[] {
     { "Points view", points_update, points_render },
     { "Z oreder view", nullptr, nullptr },
     { "Foreground view", foreground::update, nullptr },
-    { "Ground view", nullptr, nullptr },
+    { "Ground view", ground_update, nullptr },
     { "Background view", nullptr, nullptr }
 };

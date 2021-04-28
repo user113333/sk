@@ -9,6 +9,7 @@
 #include "util/util.h"
 #include "core.h"
 #include "views/views.h"
+#include "imgui/slider_ex.h"
 
 static glm::vec3 point_null = { 0, 0, 0 };
 static int count_m = 0;
@@ -46,8 +47,21 @@ glm::vec3* animation_t::point_get(int index) {
 }
 
 int animation_t::point_count() {
-    // return vector->count_m;
     return count_m;
+}
+
+float animation_t::point_get_lowest() {
+    int top_y = 0;
+    for (int n = 0; n < vector->count_n; n++) {
+        for (int m = 0; m < point_count(); m++) {
+            glm::vec3* point = (glm::vec3*)vector2d_get(vector, m, n);
+            if (top_y < point->y) {
+                top_y = point->y;
+            }
+        }
+    }
+
+    return top_y;
 }
 
 // ========== FRAMES ==========
@@ -110,6 +124,14 @@ void animation_t::selection_empty() {
     selection.clear();
 }
 
+void animation_t::selection_all() {
+    selection_empty();
+
+    for (int i = 0; i < count_m; i++) {
+        selection_push_back(i);
+    }
+}
+
 bool animation_t::selection_contains(int index) {
     for (int i = 0; i < selection.size(); i++) {
         if (index == selection[i]) {
@@ -148,6 +170,20 @@ void animation_t::foreground_imgui() {
 
 void animation_t::foreground_sprites_imgui() {
     foreground.render_sprites_imgui(count_m);
+}
+
+// ========== GROUND ==========
+
+void animation_t::ground_update() {
+    ground.update();
+}
+
+void animation_t::ground_render() {
+    ground.render();
+}
+
+void animation_t::ground_imgui() {
+    ground.imgui();
 }
 
 // ========== UPDATES ==========
@@ -210,6 +246,10 @@ void animation_t::update_move_z(bool animation_all_frames) {
 }
 
 void animation_t::render_points() {
+    if (!editor::display_points) {
+        return;
+    }
+
     char str[10];
 
     for (int i = 0; i < point_count(); i++) {
@@ -239,6 +279,8 @@ void animation_t::render_imgui_points() {
         point_selected = &point_null;
         point_selected_id = -1;
     }
+
+    ImGui::Checkbox("Display points", &editor::display_points);
 
     ImGui::Text("Points: ");
     static int selected_1 = 0;
@@ -325,6 +367,9 @@ void animation_t::render_imgui_points() {
     }
 
     ImGui::Text("Point[%d] properties: ", point_selected_id);
+    
+    SliderScalar3D("", &point_selected->x, &point_selected->y, &point_selected->z, -300, 300, -300, 300, -300, 300, 1);
+    
     ImGui::DragFloat("x", &point_selected->x, 1, 0, 0, "%0.1f");
     ImGui::DragFloat("y", &point_selected->y, 1, 0, 0, "%0.1f");
     ImGui::DragFloat("z", &point_selected->z, 1, 0, 0, "%0.1f");

@@ -36,6 +36,10 @@ void foreground_t::add_sprite() {
 }
 
 void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotation_y, float scale) {
+    if (!foreground::display) {
+        return;
+    }
+
     float src_x = 0;
     float src_y = 0;
     float src_width = texture_size_x;
@@ -91,6 +95,7 @@ void foreground_t::render_imgui(int count_m) {
     static int sprite_width = 16;
     static int sprite_height = 16;
     
+    ImGui::Text("Foreground: ");
     ImGui::DragFloat("scale", &foreground::scale, 0.01, 0, 100, "%0.2f");
     ImGui::DragFloat("rotation", &foreground::rotation, 0.02, 0, 0, "%0.2f");
     ImGui::Separator();
@@ -187,9 +192,7 @@ void foreground_t::render_imgui(int count_m) {
 void foreground_t::render_sprites_imgui(int count_m) {
     static char str[10];
 
-    if (ImGui::Button("Add sprite")) {
-        add_sprite();
-    }
+    ImGui::Checkbox("Display sprites", &foreground::display);
 
     ImGui::Text("Sprites: ");
     if (ImGui::BeginListBox("Sprites", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
@@ -219,6 +222,10 @@ void foreground_t::render_sprites_imgui(int count_m) {
                 ImGui::SetItemDefaultFocus();
         }
         ImGui::EndListBox();
+    }
+
+    if (ImGui::Button("Add sprite")) {
+        add_sprite();
     }
 
     ImGui::Text("Selected sprite[%d]: ", selected);

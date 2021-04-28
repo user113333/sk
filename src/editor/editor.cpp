@@ -43,6 +43,7 @@ namespace editor {
         DrawRectangle(-2, -8, 4, 16, COLOR_WHITE50);
         DrawRectangle(-8, -2, 16, 4, COLOR_WHITE50);
 
+        animations[animations_selected]->ground_render();
         animations[animations_selected]->foreground_render();
 
         VIEWS_RENDER(view);
@@ -185,7 +186,7 @@ namespace editor {
         return file_open;
     }
 
-    // ========== FILE ==========
+    // ========== UTIL ==========
 
     void select_animation(int index) {
         animations_selected = index;
@@ -193,14 +194,6 @@ namespace editor {
 
     animation_t* get_animation() {
         return animations[animations_selected];
-    }
-
-    void* get_animations() {
-        return &animations;
-    }
-
-    int* get_view() {
-        return &view;
     }
 
 }

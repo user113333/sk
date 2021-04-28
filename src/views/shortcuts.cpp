@@ -38,6 +38,10 @@ namespace shortcuts {
             editor::get_animation()->selection_delete();
         }
 
+        if (PRESSED(KEY_A)) {
+            editor::get_animation()->selection_all();
+        }
+
         if (PRESSED(KEY_C)) {
             editor::get_animation()->clipboard_copy();
         }
@@ -59,6 +63,19 @@ namespace shortcuts {
 
     void imgui() {
         ImGui::Text("Shortcuts: ");
+
+        ImGui::Text("====================================");
+        ImGui::Text("NUM 1-9      Change view id");
+        ImGui::Text("~            Hide imgui rendering");
+        ImGui::Text("ARROWS       Move for 1 pixel");
+        ImGui::Text("CTRL+SPACE   New point");
+        ImGui::Text("CTRL+DELETE  Delete selected points");
+        ImGui::Text("CTRL+A       Select all points");
+        ImGui::Text("CTRL+C       Copy points");
+        ImGui::Text("CTRL+V       Paste points");
+        ImGui::Text("CTRL+S       Export to file");
+        ImGui::Text("CTRL+O       Import from file");
+        ImGui::Text("====================================");
     }
 
 }

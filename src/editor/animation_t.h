@@ -5,6 +5,7 @@
 #include <vec3.hpp>
 #include <vec4.hpp>
 #include "foreground_t.h"
+#include "ground_t.h"
 
 #define ANIMATION_NAME_LENGTH 50
 
@@ -20,6 +21,7 @@ public:
     void point_remove(int index);
     glm::vec3* point_get(int index);
     int point_count();
+    float point_get_lowest();
 
     void frame_push_back();
     void frame_remove(int index);
@@ -31,6 +33,7 @@ public:
     void selection_push_back(int val);
     void selection_delete();
     void selection_empty();
+    void selection_all();
     bool selection_contains(int index);
     bool selection_is_empty();
     int selection_size();
@@ -40,6 +43,10 @@ public:
     void foreground_render();
     void foreground_imgui();
     void foreground_sprites_imgui();
+
+    void ground_update();
+    void ground_render();
+    void ground_imgui();
 
     void update();
     private:
@@ -61,4 +68,5 @@ private:
     std::vector<int> selection;
     int current_frame = 0;
     static inline foreground_t foreground;
+    static inline ground_t ground;
 };

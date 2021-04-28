@@ -33,4 +33,6 @@ namespace editor {
     // VARS
     inline bool precise_select = true;
     inline int view = 1;
+
+    inline bool display_points = 1;
 }

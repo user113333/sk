@@ -24,3 +24,11 @@ void foreground_imgui() {
 void foreground_sprites_imgui() {
     editor::get_animation()->foreground_sprites_imgui();
 }
+
+void ground_update() {
+    editor::get_animation()->ground_update();
+}
+
+void ground_imgui() {
+    editor::get_animation()->ground_imgui();
+}
