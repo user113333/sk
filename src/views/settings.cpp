@@ -6,7 +6,7 @@
 #define INI_FILE_NAME "sk.ini"
 
 struct property_t {
-    char* name;
+    const char* name;
     void* val;
     int type;
 };
