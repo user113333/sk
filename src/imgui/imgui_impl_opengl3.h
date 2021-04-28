@@ -64,6 +64,8 @@ IMGUI_IMPL_API void     ImGui_ImplOpenGL3_DestroyDeviceObjects();
 #define IMGUI_IMPL_OPENGL_ES2               // Emscripten    -> GL ES 2, "#version 100"
 
 // Otherwise try to detect supported Desktop OpenGL loaders..
+#elif 1 // CUSTOM
+#define IMGUI_IMPL_CUSTOM
 #elif defined(__has_include)
 #if __has_include(<GL/glew.h>)
     #define IMGUI_IMPL_OPENGL_LOADER_GLEW
@@ -77,8 +79,6 @@ IMGUI_IMPL_API void     ImGui_ImplOpenGL3_DestroyDeviceObjects();
     #define IMGUI_IMPL_OPENGL_LOADER_GLBINDING3
 #elif __has_include(<glbinding/Binding.h>)
     #define IMGUI_IMPL_OPENGL_LOADER_GLBINDING2
-#else
-    #define IMGUI_IMPL_CUSTOM
 #endif
 #else
     #define IMGUI_IMPL_OPENGL_LOADER_GL3W   // Default to GL3W embedded in our repository
