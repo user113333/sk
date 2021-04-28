@@ -62,8 +62,7 @@ namespace modal {
                     if (btn && open_modal & MODAL_TYPE_FILE_OPEN) {
                         sfd_Options opt = {
                             .title        = "Choose file to read",
-                            .filter_name  = "",
-                            .filter       = "All Files",
+                            .filter       = "*",
                         };
 
                         const char *filename = sfd_open_dialog(&opt);
