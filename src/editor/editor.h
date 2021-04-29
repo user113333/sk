@@ -19,6 +19,8 @@ namespace editor {
     void delete_frame(int index);
     void delete_animation(int index);
 
+    void background_load(char* path);
+
     bool file_is_open();
     void file_prepend_path(char* str);
     

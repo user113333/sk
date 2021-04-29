@@ -6,6 +6,7 @@
 #include <vec4.hpp>
 #include "foreground_t.h"
 #include "ground_t.h"
+#include "background_t.h"
 
 #define ANIMATION_NAME_LENGTH 50
 
@@ -48,6 +49,11 @@ public:
     void ground_render();
     void ground_imgui();
 
+    void background_update();
+    void background_render();
+    void background_imgui();
+    void background_load(char* path);
+
     void update();
     private:
     void update_select();
@@ -69,4 +75,5 @@ private:
     int current_frame = 0;
     static inline foreground_t foreground;
     static inline ground_t ground;
+    static inline background_t background;
 };

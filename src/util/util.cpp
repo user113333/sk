@@ -37,6 +37,16 @@ namespace util {
         strreverse(str);
     }
 
+    int strcmparr(char* str, const char** arr, int arr_count) {
+        for (int i = 0; i < arr_count; i++) {
+            if (strcmp(str, arr[i]) == 0) {
+                return 1;
+            }
+        }
+
+        return 0;
+    }
+
     void rotate_y(glm::vec3* point, float rotation) {
         point->x = point->x * cos(rotation) + point->z * sin(rotation);
         point->y = point->y;

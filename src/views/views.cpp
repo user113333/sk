@@ -32,3 +32,11 @@ void ground_update() {
 void ground_imgui() {
     editor::get_animation()->ground_imgui();
 }
+
+void background_update() {
+    editor::get_animation()->background_update();
+}
+
+void background_imgui() {
+    editor::get_animation()->background_imgui();
+}

@@ -185,6 +185,24 @@ void animation_t::ground_imgui() {
     ground.imgui();
 }
 
+// ========== BACKGROUND ==========
+
+void animation_t::background_update() {
+    background.update();
+}
+
+void animation_t::background_render() {
+    background.render();
+}
+
+void animation_t::background_imgui() {
+    background.imgui();
+}
+
+void animation_t::background_load(char* path) {
+    background.load_background(path);
+}
+
 // ========== UPDATES ==========
 
 void animation_t::update_select() {

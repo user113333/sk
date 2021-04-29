@@ -36,6 +36,9 @@ namespace editor {
     }
 
     void render() {
+        // Render background
+        animations[animations_selected]->background_render();
+
         // Render points
         animations[animations_selected]->render_points();
 
@@ -43,9 +46,13 @@ namespace editor {
         DrawRectangle(-2, -8, 4, 16, COLOR_WHITE50);
         DrawRectangle(-8, -2, 16, 4, COLOR_WHITE50);
 
+        // Render ground
         animations[animations_selected]->ground_render();
+
+        // Render foreground
         animations[animations_selected]->foreground_render();
 
+        // Render view
         VIEWS_RENDER(view);
     }
 
@@ -149,6 +156,16 @@ namespace editor {
         if (animations.size() == 0) {
             new_animation();
         }
+
+        if (animations_selected >= animations.size()) {
+            animations_selected = animations.size() - 1;
+        }
+    }
+
+    // ========== BACKGROUND ==========
+
+    void background_load(char* path) {
+        get_animation()->background_load(path);
     }
 
     // ========== FILE ==========
