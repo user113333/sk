@@ -5,6 +5,7 @@
 
 #include <cstring>
 #include <cmath>
+#include <stdio.h>
 
 #include "editor.h"
 #include "util/util.h"
@@ -35,6 +36,10 @@ void foreground_t::add_sprite() {
     sprites.push_back(sprite);
 }
 
+void foreground_t::remove_sprite(int i) {
+    sprites.erase(sprites.begin() + i);
+}
+
 void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotation_y, float scale) {
     if (!foreground::display) {
         return;
@@ -52,7 +57,7 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
         n_next = 0;
     }
 
-    dest.delta = 0;
+    dest.delta = delta;
     dest.rotation_y = rotation_y;
     dest.scale = scale;
 
@@ -66,8 +71,18 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
         dest.a_next = *(glm::vec3*)vector2d_get(vector2d, sprites[i].point_a, n_next);
         dest.b_next = *(glm::vec3*)vector2d_get(vector2d, sprites[i].point_b, n_next);
 
+        // TODO: ground?
+        // dest.a -= ground.y;
+        // dest.b -= ground.y;
+        // util::rotate_x(&dest.a, ground.skew);
+        // util::rotate_x(&dest.b, ground.skew);
+        // dest.a += ground.y;
+        // dest.b += ground.y;
+
         util::rotate_y(&dest.a, dest.rotation_y);
         util::rotate_y(&dest.b, dest.rotation_y);
+        util::rotate_y(&dest.a_next, dest.rotation_y);
+        util::rotate_y(&dest.b_next, dest.rotation_y);
 
         float hypot = hypotf(dest.a.x - dest.b.x, dest.a.y - dest.b.y);
         if (sprites[i].point_a != sprites[i].point_b && (src_height * scale > hypot)) {
@@ -87,7 +102,6 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
     }
 }
 
-static int selected = -1;
 void foreground_t::render_imgui(int count_m) {
     // static char str[50] = "foreground.png";
     static char str[50] = "res/test.png";
@@ -211,7 +225,11 @@ void foreground_t::render_sprites_imgui(int count_m) {
                 ImGui::Separator();
 
                 if (ImGui::Button("Delete")) {
-                    sprites.erase(sprites.begin() + i);
+                    remove_sprite(i);
+                    if (selected >= sprites.size()) {
+                        selected = sprites.size() - 1;
+                    }
+
                     ImGui::CloseCurrentPopup();
                 }
 
@@ -236,7 +254,19 @@ void foreground_t::render_sprites_imgui(int count_m) {
 
     sprite_t& sprite = sprites.at(selected);
     ImGui::SliderInt("foreground_y", &sprite.foreground_y, 0, texture.height == 0 ? 0 : texture.height / texture_size_y - 1);
-    ImGui::SliderFloat("ratio (-1 = static)", &sprite.ratio, 0, 1);
+    ImGui::SliderFloat("ratio", &sprite.ratio, 0, 1);
     ImGui::SliderInt("point_a", &sprite.point_a, 0, count_m == 0 ? 0 : count_m - 1);
     ImGui::SliderInt("point_b", &sprite.point_b, 0, count_m == 0 ? 0 : count_m - 1);
+}
+
+void foreground_t::ground_update() {
+    ground.update();
+}
+
+void foreground_t::ground_render() {
+    ground.render();
+}
+
+void foreground_t::ground_imgui() {
+    ground.imgui();
 }

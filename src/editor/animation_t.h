@@ -5,8 +5,8 @@
 #include <vec3.hpp>
 #include <vec4.hpp>
 #include "foreground_t.h"
-#include "ground_t.h"
 #include "background_t.h"
+#include "play_t.h"
 
 #define ANIMATION_NAME_LENGTH 50
 
@@ -54,13 +54,18 @@ public:
     void background_imgui();
     void background_load(char* path);
 
+    void zorder_update();
+
+    void play_imgui();
+
     void update();
     private:
     void update_select();
+    void update_select_z();
     void update_move(bool all_frames);
     void update_move_z(bool all_frames);
     public:
-    void render_points();
+    void render_points(bool zorder);
     void render_select_rect();
     void render_imgui_points();
     void render_imgui_frames();
@@ -73,7 +78,7 @@ private:
     vector2d_t* vector;
     std::vector<int> selection;
     int current_frame = 0;
+    play_t play;
     static inline foreground_t foreground;
-    static inline ground_t ground;
     static inline background_t background;
 };

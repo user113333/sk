@@ -13,6 +13,10 @@ void points_render() {
     editor::get_animation()->render_select_rect();
 }
 
+void zorder_update() {
+    editor::get_animation()->zorder_update();
+}
+
 void frames_imgui() {
     editor::get_animation()->render_imgui_frames();
 }
@@ -39,4 +43,8 @@ void background_update() {
 
 void background_imgui() {
     editor::get_animation()->background_imgui();
+}
+
+void play_imgui() {
+    editor::get_animation()->play_imgui();
 }

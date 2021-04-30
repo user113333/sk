@@ -6,7 +6,10 @@ public:
     void render();
     void imgui();
 
-private:
-    bool display = true;
+public:
+    float skew = 0;
     float y = 250;
+
+private:
+    bool display = false;
 };

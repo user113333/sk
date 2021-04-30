@@ -40,7 +40,7 @@ namespace editor {
         animations[animations_selected]->background_render();
 
         // Render points
-        animations[animations_selected]->render_points();
+        animations[animations_selected]->render_points(view == 2);
 
         // Render center
         DrawRectangle(-2, -8, 4, 16, COLOR_WHITE50);

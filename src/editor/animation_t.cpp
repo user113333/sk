@@ -160,7 +160,7 @@ void animation_t::foreground_load(const char* foreground_path, unsigned int x, u
 }
 
 void animation_t::foreground_render() {
-    foreground.render(vector, current_frame, 0.0, foreground::rotation, foreground::scale);
+    foreground.render(vector, play.get_frame(current_frame, vector->count_n), play.get_delta(vector->count_n), foreground::rotation, foreground::scale);
 }
 
 void animation_t::foreground_imgui() {
@@ -174,15 +174,15 @@ void animation_t::foreground_sprites_imgui() {
 // ========== GROUND ==========
 
 void animation_t::ground_update() {
-    ground.update();
+    foreground.ground_update();
 }
 
 void animation_t::ground_render() {
-    ground.render();
+    foreground.ground_render();
 }
 
 void animation_t::ground_imgui() {
-    ground.imgui();
+    foreground.ground_imgui();
 }
 
 // ========== BACKGROUND ==========
@@ -201,6 +201,28 @@ void animation_t::background_imgui() {
 
 void animation_t::background_load(char* path) {
     background.load_background(path);
+}
+
+// ========== Z-ORDER ==========
+
+void animation_t::zorder_update() {
+    animation_t* animation = editor::get_animation();
+
+    if (IsKeyDown(KEY_LEFT_CONTROL)) {
+        if (mouse::is_down() && !mouse::is_locked()) {
+            animation->update_move_z(animation_all_frames);
+        }
+    } else {
+        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && !mouse::is_locked()) {
+            animation->update_select_z();
+        }
+    }
+}
+
+// ========== PLAY ==========
+
+void animation_t::play_imgui() {
+    play.imgui();
 }
 
 // ========== UPDATES ==========
@@ -260,9 +282,44 @@ void animation_t::update_move(bool animation_all_frames) {
 }
 
 void animation_t::update_move_z(bool animation_all_frames) {
+    glm::vec2 select_delta = mouse::pos_delta();
+
+    for (int i = 0; i < selection.size(); i++) {
+        if (animation_all_frames) {
+            for (int n = 0; n < vector->count_n; n++) {
+                glm::vec3* point = (glm::vec3*) vector2d_get(vector, selection[i], n);
+                point->z += select_delta.x;
+            }
+        } else {
+            glm::vec3* point = (glm::vec3*) vector2d_get(vector, selection[i], current_frame);
+            point->z += select_delta.x;
+        }
+    }
 }
 
-void animation_t::render_points() {
+void animation_t::update_select_z() {
+    glm::vec4 select = mouse::select_rect();
+    
+    if (!editor::precise_select) {
+        select.x -= texture_point.width / 2;
+        select.y -= texture_point.height / 2;
+        select.z += texture_point.width;
+        select.w += texture_point.height;
+    }
+
+    if (!IsKeyDown(KEY_LEFT_SHIFT)) {
+        selection.clear();
+    }
+
+    for (int i = 0; i < point_count(); i++) {
+        glm::vec3* point = point_get(i);
+        if (point->z > select.x && point->z < select.x + select.z && point->y > select.y && point->y < select.y + select.w) {
+            selection.push_back(i);
+        }
+    }
+}
+
+void animation_t::render_points(bool zorder) {
     if (!editor::display_points) {
         return;
     }
@@ -272,8 +329,29 @@ void animation_t::render_points() {
     for (int i = 0; i < point_count(); i++) {
         util::itoa(str, i);
         glm::vec3* point = point_get(i);
-        DrawTexture(texture_point, point->x - texture_point.width / 2, point->y - texture_point.height / 2, selection_contains(i) ? COLOR_PRIMARY : COLOR_WHITE);
-        DrawTextEx(font_main, str, { point->x + texture_point.width / 2, point->y - 5 - texture_point.height / 2 }, font_main.baseSize, 0, COLOR_WHITE);
+
+        float x = point->x;
+        float y = point->y;
+
+        if (zorder) {
+            x = point->z;
+        }
+        
+        DrawTexture(
+            texture_point,
+            x - texture_point.width / 2,
+            y - texture_point.height / 2,
+            selection_contains(i) ? COLOR_PRIMARY : COLOR_WHITE
+        );
+        
+        DrawTextEx(
+            font_main,
+            str,
+            { x + texture_point.width / 2, y - 5 - texture_point.height / 2 },
+            font_main.baseSize,
+            0,
+            COLOR_WHITE
+        );
     }
 }
 

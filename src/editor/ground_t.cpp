@@ -25,7 +25,8 @@ void ground_t::imgui() {
     ImGui::Checkbox("Display ground", &display);
     
     ImGui::Text("Ground: ");
-    ImGui::DragFloat("Ground Y", &y, 1, -500, 500, "%.0f");
+    ImGui::DragFloat("y", &y, 1, -500, 500, "%.0f");
+    ImGui::DragFloat("skew", &skew, 0.02, 0, 0, "%0.2f");
     
     ImGui::Separator();
     static float display_y = 0;

@@ -26,6 +26,9 @@ float foreground_calc_rotation(foreground_dest_t* dest) {
 }
 
 glm::vec3 foreground_calc_dest(foreground_dest_t* dest) {
+    dest->a = (dest->a_next - dest->a) * dest->delta + dest->a;
+    dest->b = (dest->b_next - dest->b) * dest->delta + dest->b;
+
     float x = (dest->a.x - (dest->a.x - dest->b.x) * dest->ratio);
     float y = (dest->a.y - (dest->a.y - dest->b.y) * dest->ratio);
     float z = (dest->a.z - (dest->a.z - dest->b.z) * dest->ratio);
