@@ -12,9 +12,6 @@
 #include "foreground_dest.h"
 #include "views/foreground.h"
 
-static Texture2D texture;
-static float texture_size_x = 0;
-static float texture_size_y = 0;
 static foreground_dest_t dest;
 
 void foreground_t::initialize(const char* path, unsigned int x, unsigned int y) {
@@ -27,6 +24,12 @@ void foreground_t::initialize(const char* path, unsigned int x, unsigned int y) 
 
     texture = LoadTexture(str);
 
+    if (texture.id != 0) {
+        strcpy(this->path, path);
+    } else {
+        strcpy(this->path, "\0");
+    }
+
     dest.texture_size_x = x;
     dest.texture_size_y = y;
 }
@@ -34,6 +37,21 @@ void foreground_t::initialize(const char* path, unsigned int x, unsigned int y) 
 void foreground_t::add_sprite() {
     sprite_t sprite;
     sprites.push_back(sprite);
+}
+
+void foreground_t::add_sprite(int foreground_y, float ratio, int point_a, int point_b) {
+    sprite_t sprite;
+
+    sprite.foreground_y = foreground_y;
+    sprite.ratio = ratio;
+    sprite.point_a = point_a;
+    sprite.point_b = point_b;
+    
+    sprites.push_back(sprite);
+}
+
+void foreground_t::clear_sprites() {
+    sprites.clear();
 }
 
 void foreground_t::remove_sprite(int i) {
@@ -269,4 +287,24 @@ void foreground_t::ground_render() {
 
 void foreground_t::ground_imgui() {
     ground.imgui();
+}
+
+int foreground_t::get_sprites_count() {
+    return sprites.size();
+}
+
+sprite_t* foreground_t::get_sprite(int index) {
+    return &sprites[index];
+}
+
+char* foreground_t::get_path() {
+    return path;
+}
+
+int foreground_t::get_x() {
+    return texture_size_x;
+}
+
+int foreground_t::get_y() {
+    return texture_size_y;
 }

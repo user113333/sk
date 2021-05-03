@@ -13,7 +13,7 @@ namespace editor {
 
     void new_point();
     void new_frame();
-    void new_animation();
+    animation_t* new_animation();
     void new_sprite();
     void delete_point(int index);
     void delete_frame(int index);
@@ -36,5 +36,5 @@ namespace editor {
     inline bool precise_select = true;
     inline int view = 1;
 
-    inline bool display_points = 1;
+    inline bool display_points = true;
 }

@@ -57,6 +57,8 @@ namespace shortcuts {
         if (PRESSED(KEY_S)) {
             if (editor::get_file_open()[0] == '\0') {
                 modal::open("Export file path: ", "out", editor::export_file, MODAL_TYPE_FILE_SAVE);
+            } else {
+                editor::export_file(editor::get_file_open());
             }
         }
     }

@@ -11,7 +11,6 @@
 #include "views/views.h"
 
 static glm::vec3 point_null = { 0, 0, 0 };
-static int count_m = 0;
 
 // ========== CONSTRUCTS ==========
 
@@ -43,6 +42,10 @@ void animation_t::point_remove(int index) {
 
 glm::vec3* animation_t::point_get(int index) {
     return (glm::vec3*)vector2d_get(vector, index, current_frame);
+}
+
+glm::vec3* animation_t::point_get(int m, int n) {
+    return (glm::vec3*)vector2d_get(vector, m, n);
 }
 
 int animation_t::point_count() {
@@ -152,55 +155,67 @@ int animation_t::selection_size() {
 // ========== FOREGROUND ==========
 
 void animation_t::foreground_push_back() {
-    foreground.add_sprite();
+    animation_foreground.add_sprite();
 }
 
 void animation_t::foreground_load(const char* foreground_path, unsigned int x, unsigned int y) {
-    foreground.initialize(foreground_path, x, y);
+    animation_foreground.initialize(foreground_path, x, y);
 }
 
 void animation_t::foreground_render() {
-    foreground.render(vector, play.get_frame(current_frame, vector->count_n), play.get_delta(vector->count_n), foreground::rotation, foreground::scale);
+    animation_foreground.render(vector, play.get_frame(current_frame, vector->count_n), play.get_delta(vector->count_n), foreground::rotation, foreground::scale);
 }
 
 void animation_t::foreground_imgui() {
-    foreground.render_imgui(count_m);
+    animation_foreground.render_imgui(count_m);
 }
 
 void animation_t::foreground_sprites_imgui() {
-    foreground.render_sprites_imgui(count_m);
+    animation_foreground.render_sprites_imgui(count_m);
+}
+
+char* animation_t::foreground_get_path() {
+    return animation_foreground.get_path();
+}
+
+int animation_t::foreground_get_x() {
+    return animation_foreground.get_x();
+}
+
+int animation_t::foreground_get_y() {
+    return animation_foreground.get_y();
 }
 
 // ========== GROUND ==========
 
 void animation_t::ground_update() {
-    foreground.ground_update();
+    animation_foreground.ground_update();
 }
 
 void animation_t::ground_render() {
-    foreground.ground_render();
+    animation_foreground.ground_render();
 }
 
 void animation_t::ground_imgui() {
-    foreground.ground_imgui();
+    animation_foreground.ground_imgui();
 }
 
 // ========== BACKGROUND ==========
 
 void animation_t::background_update() {
-    background.update();
+    animation_background.update();
 }
 
 void animation_t::background_render() {
-    background.render();
+    animation_background.render();
 }
 
 void animation_t::background_imgui() {
-    background.imgui();
+    animation_background.imgui();
 }
 
 void animation_t::background_load(char* path) {
-    background.load_background(path);
+    animation_background.load_background(path);
 }
 
 // ========== Z-ORDER ==========
@@ -571,4 +586,22 @@ void animation_t::clipboard_paste() {
         point->y = *(float*)(str + (index + count) + (sizeof(float) * 3 * i) + (sizeof(float) * 1));
         point->z = *(float*)(str + (index + count) + (sizeof(float) * 3 * i) + (sizeof(float) * 2));
     }
+}
+
+// ========== VARS ==========
+
+int animation_t::get_count_m() {
+    return count_m;
+}
+
+int animation_t::get_count_n() {
+    return vector->count_n;
+}
+
+void animation_t::set_count_m(int m) {
+    count_m = m;
+}
+
+void animation_t::set_count_n(int n) {
+    vector->count_n = n;
 }

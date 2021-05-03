@@ -21,6 +21,7 @@ public:
     void point_push_back(glm::vec3 point);
     void point_remove(int index);
     glm::vec3* point_get(int index);
+    glm::vec3* point_get(int m, int n);
     int point_count();
     float point_get_lowest();
 
@@ -44,6 +45,9 @@ public:
     void foreground_render();
     void foreground_imgui();
     void foreground_sprites_imgui();
+    char* foreground_get_path();
+    int foreground_get_x();
+    int foreground_get_y();
 
     void ground_update();
     void ground_render();
@@ -73,12 +77,19 @@ public:
     void clipboard_copy();
     void clipboard_paste();
 
+    int get_count_m();
+    int get_count_n();
+    void set_count_m(int m);
+    void set_count_n(int n);
+
 private:
     char name[ANIMATION_NAME_LENGTH] = "New Animation";
+    static inline int count_m = 0;
     vector2d_t* vector;
     std::vector<int> selection;
     int current_frame = 0;
     play_t play;
-    static inline foreground_t foreground;
-    static inline background_t background;
 };
+
+inline foreground_t animation_foreground;
+inline background_t animation_background;

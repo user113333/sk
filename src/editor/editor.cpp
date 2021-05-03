@@ -11,6 +11,7 @@
 #include "core.h"
 #include "views/views.h"
 #include "util/util.h"
+#include "util/parson.h"
 
 namespace editor {
 
@@ -133,9 +134,11 @@ namespace editor {
         animations[animations_selected]->frame_push_back();
     }
 
-    void new_animation() {
+    animation_t* new_animation() {
         animations_selected = animations.size();
-        animations.push_back(new animation_t);
+        animation_t* animation = new animation_t;
+        animations.push_back(animation);
+        return animation;
     }
 
     void new_sprite() {
@@ -188,15 +191,150 @@ namespace editor {
 
     void create_new(char* str) {
         animations.clear();
+        animation_foreground.clear_sprites();
         new_animation();
     }
 
     void import_file(char* str) {
+        JSON_Value* root_val = json_parse_file(str);
+        
+        if (root_val == NULL) {
+            return;
+        }
+        
         strcpy(file_open, str);
+        JSON_Object* root_obj = json_value_get_object(root_val);
+
+        const char* sprite_sheet = json_object_get_string(root_obj, "sprite_sheet");
+        int x = json_object_get_number(root_obj, "sprite_x");
+        int y = json_object_get_number(root_obj, "sprite_y");
+        int sprite_count = json_object_get_number(root_obj, "sprite_count");
+
+        animation_foreground.initialize(sprite_sheet, x, y);
+        animation_foreground.clear_sprites();
+
+        JSON_Array* sprite_arr = json_object_get_array(root_obj, "sprite");
+
+        for (int i = 0; i < sprite_count; i++) {
+            JSON_Object* sprite_obj = json_array_get_object(sprite_arr, i);
+
+            int foreground_y = json_object_get_number(sprite_obj, "foreground_y");
+            float ratio = json_object_get_number(sprite_obj, "ratio");
+            int point_a = json_object_get_number(sprite_obj, "point_a");
+            int point_b = json_object_get_number(sprite_obj, "point_b");
+
+            animation_foreground.add_sprite(foreground_y, ratio, point_a, point_b);
+        }
+
+        int anim_count = json_object_get_number(root_obj, "animation_count");
+        JSON_Array* anim_arr = json_object_get_array(root_obj, "animation");
+
+        animations.clear();
+
+        for (int i = 0; i < anim_count; i++) {
+            JSON_Object* anim_obj = json_array_get_object(anim_arr, i);
+            const char* name = json_object_get_string(anim_obj, "name");
+            int count_m = json_object_get_number(anim_obj, "count_m");
+            int count_n = json_object_get_number(anim_obj, "count_n");
+
+            animation_t* animation = new_animation();
+            strcpy(animation->get_name(), name);
+            animation->set_count_m(count_m);
+            animation->set_count_n(count_n);
+
+            JSON_Array* frame_arr = json_object_get_array(anim_obj, "frame");
+            
+            for (int n = 0; n < animation->get_count_n(); n++) {
+                JSON_Array* n_arr = json_array_get_array(frame_arr, n);
+
+                for (int m = 0; m < animation->get_count_m(); m++) {
+                    JSON_Object* p_obj = json_array_get_object(n_arr, m);
+
+                    glm::vec3* p = animation->point_get(m, n);
+
+                    p->x = json_object_get_number(p_obj, "x");
+                    p->y = json_object_get_number(p_obj, "y");
+                    p->z = json_object_get_number(p_obj, "z");
+                }
+            }
+        }
     }
 
     void export_file(char* str) {
         strcpy(file_open, str);
+        
+        JSON_Value* root_val = json_value_init_object();
+        JSON_Object* root_obj = json_value_get_object(root_val);
+        JSON_Value* root_arr_val = json_value_init_array();
+        JSON_Array* root_arr = json_value_get_array(root_arr_val);
+        
+        // Sprites
+        json_object_set_string(root_obj, "sprite_sheet", animation_foreground.get_path());
+        json_object_set_number(root_obj, "sprite_x", animation_foreground.get_x());
+        json_object_set_number(root_obj, "sprite_y", animation_foreground.get_y());
+        json_object_set_number(root_obj, "sprite_count", animation_foreground.get_sprites_count());
+
+        JSON_Value* sprite_arr_val = json_value_init_array();
+        JSON_Array* sprite_arr = json_value_get_array(sprite_arr_val);
+        
+        for (int i = 0; i < animation_foreground.get_sprites_count(); i++) {
+            JSON_Value* sprite_val = json_value_init_object();
+            JSON_Object* sprite_obj = json_value_get_object(sprite_val);
+
+            sprite_t* sprite = animation_foreground.get_sprite(i);
+
+            json_object_set_number(sprite_obj, "foreground_y", sprite->foreground_y);
+            json_object_set_number(sprite_obj, "ratio", sprite->ratio);
+            json_object_set_number(sprite_obj, "point_a", sprite->point_a);
+            json_object_set_number(sprite_obj, "point_b", sprite->point_b);
+
+            json_array_append_value(sprite_arr, sprite_val);
+        }
+
+        json_object_set_value(root_obj, "sprite", sprite_arr_val);
+
+        // Animations
+        for (int i = 0; i < animations.size(); i++) {
+            JSON_Value* anim_val = json_value_init_object();
+            JSON_Object* anim_obj = json_value_get_object(anim_val);
+            JSON_Value* anim_arr_val = json_value_init_array();
+            JSON_Array* anim_arr = json_value_get_array(anim_arr_val);
+
+            animation_t* animation = animations[i];
+
+            json_object_set_string(anim_obj, "name", animation->get_name());
+            json_object_set_number(anim_obj, "count_m", animation->get_count_m());
+            json_object_set_number(anim_obj, "count_n", animation->get_count_n());
+
+            for (int n = 0; n < animation->get_count_n(); n++) {
+                JSON_Value* frame_arr_val = json_value_init_array();
+                JSON_Array* frame_arr = json_value_get_array(frame_arr_val);
+
+                for (int m = 0; m < animation->get_count_m(); m++) {
+                    JSON_Value* p_val = json_value_init_object();
+                    JSON_Object* p_obj = json_value_get_object(p_val);
+
+                    glm::vec3* p = animation->point_get(m, n);
+
+                    json_object_set_number(p_obj, "x", p->x);
+                    json_object_set_number(p_obj, "y", p->y);
+                    json_object_set_number(p_obj, "z", p->z);
+
+                    json_array_append_value(frame_arr, p_val);
+                }
+
+                json_array_append_value(anim_arr, frame_arr_val);
+            }
+
+            json_object_set_value(anim_obj, "frame", anim_arr_val);
+            json_array_append_value(root_arr, anim_val);
+        }
+
+        json_object_set_number(root_obj, "animation_count", animations.size());
+        json_object_set_value(root_obj, "animation", root_arr_val);
+
+        json_serialize_to_file(root_val, str);
+        json_value_free(root_val);
     }
 
     char* get_file_open() {
