@@ -11,6 +11,7 @@
 #include "core.h"
 #include "views/views.h"
 #include "util/util.h"
+#include "imgui/modal.h"
 #include "util/parson.h"
 
 namespace editor {
@@ -28,10 +29,18 @@ namespace editor {
     void update() {
         shortcuts::update();
         
+        // title
         char str[50];
         strcpy(str, "sk - ");
         strcat(str, file_open);
         SetWindowTitle(file_is_open() ? str : "sk");
+
+        // drop files
+        if (IsFileDropped()) {
+            static int files_count = 0;
+            modal::open("Import file path: ", GetDroppedFiles(&files_count)[0], editor::import_file, MODAL_TYPE_FILE_OPEN);
+            ClearDroppedFiles();
+        }
 
         VIEWS_UPDATE(view);
     }
