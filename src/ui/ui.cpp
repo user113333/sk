@@ -11,6 +11,7 @@ namespace ui {
 
     void update() {
         static bool window_demo = false;
+        static bool position_windows = false;
 
         if (!show_imgui) {
             return;
@@ -51,6 +52,10 @@ namespace ui {
 
                 if (ImGui::MenuItem("Imgui demo Window", "", window_demo)) { window_demo = !window_demo; }
 
+                ImGui::Separator();
+
+                if (ImGui::MenuItem("Reset workplace")) { position_windows = true; }
+
                 ImGui::EndMenu();
             }
 
@@ -87,13 +92,70 @@ namespace ui {
         }
 
         static int window_flags = ImGuiWindowFlags_NoCollapse;
+        float screen_width = GetScreenWidth();
+        float screen_height = GetScreenHeight();
 
         for (int i = 0; i < IM_ARRAYSIZE(windows); i++) {
             if (windows[i].imgui_window) {
+                if (position_windows) {
+                    // TODO: (this is reset window positions) hide + show all windows that you want
+
+                    const float toolbar_height = 25;
+                    const float width = 300;
+
+                    float x = screen_width - width;
+                    float y = 0;
+                    float w = width;
+                    float h = 0;
+
+                    switch (windows[i].workplace_position) {
+                        case 0:
+                            x = 0;
+                            y = toolbar_height;
+                            h = 350;
+                            break;
+                        
+                        case 1:
+                            x = 0;
+                            y = toolbar_height + 350;
+                            h = screen_height - 350 - toolbar_height;
+                            break;
+
+                        case 2:
+                            y = toolbar_height;
+                            h = 200;
+                            break;
+
+                        case 3:
+                            y = toolbar_height + 200;
+                            h = 200;
+                            break;
+
+                        case 4:
+                            y = toolbar_height + 200 + 200;
+                            h = 200;
+                            break;
+
+                        case 5:
+                            y = toolbar_height + 200 + 200 + 200;
+                            h = screen_height - toolbar_height - 200 - 200 - 200;
+                            break;
+                    }
+
+                    if (y != 0) {
+                        ImGui::SetNextWindowPos({ x, y });
+                        ImGui::SetNextWindowSize({ w, h });
+                    }
+                }
+
                 ImGui::Begin(windows[i].name, &windows[i].imgui_window, window_flags);
                 WINDOWS_IMGUI(i);
                 ImGui::End();
             }
+        }
+
+        if (position_windows) {
+            position_windows = false;
         }
     }
 

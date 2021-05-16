@@ -14,6 +14,8 @@ struct window_t {
 
     bool separator = false;
     bool imgui_window = true;
+
+    int workplace_position = -1;
 };
 
 struct view_t {
@@ -43,14 +45,14 @@ void background_imgui();
 void play_imgui();
 
 inline window_t windows[] = {
-    { "Master window", editor::imgui },
-    { "Points window", points_imgui },
-    { "Frames window", frames_imgui },
-    { "Foreground window", foreground_imgui },
-    { "Sprites window", foreground_sprites_imgui },
-    { "Ground window", ground_imgui },
-    { "Background window", background_imgui },
-    { "Play window", play_imgui },
+    { "Master window", editor::imgui, false, true, 0 },
+    { "Points window", points_imgui, false, true, 2 },
+    { "Frames window", frames_imgui, false, true, 3 },
+    { "Foreground window", foreground_imgui, false, true, 5 },
+    { "Sprites window", foreground_sprites_imgui, false, true, 1 },
+    { "Ground window", ground_imgui, false, false },
+    { "Background window", background_imgui, false, true, 4 },
+    { "Play window", play_imgui, false, false },
 
     { "Settings window", settings::imgui, true, false },
     { "Shortcuts window", shortcuts::imgui, false, false }
