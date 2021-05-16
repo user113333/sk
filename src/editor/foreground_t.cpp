@@ -14,6 +14,8 @@
 
 static foreground_dest_t dest;
 
+static char foreground_path[50] = "res/test.png";
+
 void foreground_t::initialize(const char* path, unsigned int x, unsigned int y) {
     char str[100];
     strcpy(str, path);
@@ -32,6 +34,10 @@ void foreground_t::initialize(const char* path, unsigned int x, unsigned int y) 
 
     dest.texture_size_x = x;
     dest.texture_size_y = y;
+
+    if (path != foreground_path) {
+        strcpy(foreground_path, path);
+    }
 }
 
 void foreground_t::add_sprite() {
@@ -102,12 +108,17 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
         util::rotate_y(&dest.a_next, dest.rotation_y);
         util::rotate_y(&dest.b_next, dest.rotation_y);
 
-        float hypot = hypotf(dest.a.x - dest.b.x, dest.a.y - dest.b.y);
+        // smooth play
+        glm::vec2 dest_a = (dest.a_next - dest.a) * dest.delta + dest.a;
+        glm::vec2 dest_b = (dest.b_next - dest.b) * dest.delta + dest.b;
+
+        glm::vec3 p = foreground_calc_dest(&dest);
+
+        // TODO: ratio - scale interferance
+        float hypot = hypotf(dest_a.x - dest_b.x, dest_a.y - dest_b.y);
         if (sprites[i].point_a != sprites[i].point_b && (src_height * scale > hypot)) {
             dest_height = hypot;
         }
-
-        glm::vec3 p = foreground_calc_dest(&dest);
 
         DrawTexturePro(
             texture,
@@ -121,8 +132,6 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
 }
 
 void foreground_t::render_imgui(int count_m) {
-    // static char str[50] = "foreground.png";
-    static char str[50] = "res/test.png";
     static char str_path[100];
     static int sprite_width = 16;
     static int sprite_height = 16;
@@ -132,15 +141,15 @@ void foreground_t::render_imgui(int count_m) {
     ImGui::DragFloat("rotation", &foreground::rotation, 0.02, 0, 0, "%0.2f");
     ImGui::Separator();
     ImGui::Text("Load Foreground");
-    ImGui::InputText("\".png\" File path", str, IM_ARRAYSIZE(str));
+    ImGui::InputText("\".png\" File path", foreground_path, IM_ARRAYSIZE(foreground_path));
 
     if (IsKeyPressed(KEY_ENTER) && ImGui::IsItemFocused()) {
-        initialize(str, sprite_width, sprite_height);
+        initialize(foreground_path, sprite_width, sprite_height);
     }
 
     if (editor::file_is_open()) {
         static ImVec4 col = { 255, 255, 255, 255 };
-        strcpy(str_path, str);
+        strcpy(str_path, foreground_path);
         editor::file_prepend_path(str_path);
         
         if (ImGui::IsItemFocused()) {
@@ -152,14 +161,14 @@ void foreground_t::render_imgui(int count_m) {
             
         ImGui::TextColored(col, "%s", str_path);
     } else {
-        ImGui::TextColored({ 255, 0, 0, 255 }, "%s -> relative to exe", str);
+        ImGui::TextColored({ 255, 0, 0, 255 }, "%s -> relative to exe", foreground_path);
     }
     
     ImGui::DragInt("Sprite width", &sprite_width, 1, 0, INT16_MAX);
     ImGui::DragInt("Sprite height", &sprite_height, 1, 0, INT16_MAX);
 
     if (ImGui::Button("Load foreground [Enter]")) {
-        initialize(str, sprite_width, sprite_height);
+        initialize(foreground_path, sprite_width, sprite_height);
     }
 
     if (texture.id == 0) {

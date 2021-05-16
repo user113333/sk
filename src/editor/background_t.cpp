@@ -3,10 +3,12 @@
 #include <imgui.h>
 
 #include <algorithm>
+#include <string>
 
 #include "editor.h"
 #include "util/util.h"
 #include "imgui/modal.h"
+#include "util/fs.h"
 
 const char* image_extensions[] = {
     "png",
@@ -17,7 +19,8 @@ const char* image_extensions[] = {
 void background_t::next() {
     index++;
 
-    if (index >= textures.size()); {
+    int count = textures.size();
+    if (index >= count) {
         index = 0;
     }
 }
@@ -25,8 +28,9 @@ void background_t::next() {
 void background_t::prev() {
     index--;
 
+    int count = textures.size();
     if (index < 0) {
-        index = textures.size() - 1;
+        index = count - 1;
     }
 }
 
@@ -39,6 +43,10 @@ void background_t::remove(int i) {
 }
 
 void background_t::load_background(char* path) {
+    if (fs::is_file(path)) {
+        path[fs::get_dir(path)] = '\0';
+    }
+    
     textures.clear();
     index = 0;
 
@@ -76,7 +84,7 @@ void background_t::load_background(char* path) {
     }
 
     struct {
-        bool operator()(background_texture_t a, background_texture_t b) const { return strcmp(a.path, b.path) < 0; }
+        bool operator()(background_texture_t a, background_texture_t b) const { return util::strcompare(a.path, b.path) < 0; }
     } custom_less;
     std::sort(textures.begin(), textures.end(), custom_less);
 }

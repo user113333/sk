@@ -33,6 +33,7 @@ namespace editor {
     animation_t* get_animation();
 
     // VARS
+    inline bool bg_with_frames = false;
     inline bool precise_select = true;
     inline int view = 1;
 

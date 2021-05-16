@@ -5,6 +5,7 @@
 #include "ui/ui.h"
 #include "imgui/modal.h"
 #include "views/views.h"
+#include "editor/background_t.h"
 
 #define PRESSED(X) IsKeyPressed(X)
 
@@ -25,6 +26,14 @@ namespace shortcuts {
             ui::show_imgui = !ui::show_imgui;
         }
 
+        if ((!IsKeyDown(KEY_LEFT_CONTROL) || editor::bg_with_frames) && PRESSED(KEY_Q)) {
+            editor::get_animation()->background_prev();
+        }
+
+        if ((!IsKeyDown(KEY_LEFT_CONTROL) || editor::bg_with_frames) && PRESSED(KEY_E)) {
+            editor::get_animation()->background_next();
+        }
+
         // ===== CONTROL SHORTCUTS =====
         if (!IsKeyDown(KEY_LEFT_CONTROL)) {
             return;
@@ -36,6 +45,18 @@ namespace shortcuts {
 
         if (PRESSED(KEY_DELETE)) {
             editor::get_animation()->selection_delete();
+        }
+
+        if (PRESSED(KEY_ENTER)) {
+            editor::get_animation()->frame_push_back();
+        }
+
+        if (PRESSED(KEY_Q)) {
+            editor::get_animation()->frame_prev();
+        }
+
+        if (PRESSED(KEY_E)) {
+            editor::get_animation()->frame_next();
         }
 
         if (PRESSED(KEY_A)) {
@@ -69,8 +90,13 @@ namespace shortcuts {
         ImGui::Text("====================================");
         ImGui::Text("NUM 1-9      Change view id");
         ImGui::Text("~            Hide imgui rendering");
-        ImGui::Text("ARROWS       Move for 1 pixel");
+        ImGui::Text("Q            Previous background");
+        ImGui::Text("E            Next background");
+        ImGui::Text("CTRL+Q       Previous frame");
+        ImGui::Text("CTRL+E       Next frame");
+        ImGui::Text("ARROWS       Move for 1 pixel"); // TODO: arrows
         ImGui::Text("CTRL+SPACE   New point");
+        ImGui::Text("CTRL+ENTER   New frame");
         ImGui::Text("CTRL+DELETE  Delete selected points");
         ImGui::Text("CTRL+A       Select all points");
         ImGui::Text("CTRL+C       Copy points");

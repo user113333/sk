@@ -2,6 +2,8 @@
 
 #include <vec3.hpp>
 #include <cmath>
+#include <cstring>
+#include <string>
 
 namespace util {
 
@@ -35,6 +37,18 @@ namespace util {
 
         str[i++] = '\0';
         strreverse(str);
+    }
+
+    int strcompare(const char* str0, const char* str1) {
+        try {
+            int i0 = std::stoi(str0);
+            int i1 = std::stoi(str1);
+
+            return (i0 > i1) - 1;
+        } catch (int e) {
+        }
+
+        return strcmp(str0, str1);
     }
 
     int strcmparr(char* str, const char** arr, int arr_count) {

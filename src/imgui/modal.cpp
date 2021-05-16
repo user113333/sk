@@ -54,7 +54,7 @@ namespace modal {
                     ImGui::SetKeyboardFocusHere(0);
                 }
                 
-                ImGui::Text(str0);
+                ImGui::TextWrapped(str0);
                 
                 if (open_modal & (MODAL_TYPE_FILE_SAVE | MODAL_TYPE_FILE_OPEN)) {
                     bool btn = ImGui::Button("..");

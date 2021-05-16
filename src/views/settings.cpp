@@ -27,6 +27,7 @@ namespace settings {
         ImGui::SameLine();
         ImGui::Text("Settings: ");
         ImGui::Checkbox("Precise select", &editor::precise_select);
+        ImGui::Checkbox("Move background with frames [CTRL + E & Q]", &editor::bg_with_frames);
     }
 
     void read() {

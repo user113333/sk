@@ -101,6 +101,22 @@ int animation_t::frame_count() {
     return vector->count_n;
 }
 
+void animation_t::frame_next() {
+    current_frame++;
+
+    if (current_frame >= vector->count_n) {
+        current_frame = 0;
+    }
+}
+
+void animation_t::frame_prev() {
+    current_frame--;
+
+    if (current_frame < 0) {
+        current_frame = vector->count_n - 1;
+    }
+}
+
 // ========== SELECTION ==========
 
 void animation_t::selection_remove(int i) {
@@ -216,6 +232,14 @@ void animation_t::background_imgui() {
 
 void animation_t::background_load(char* path) {
     animation_background.load_background(path);
+}
+
+void animation_t::background_next() {
+    animation_background.next();
+}
+
+void animation_t::background_prev() {
+    animation_background.prev();
 }
 
 // ========== Z-ORDER ==========

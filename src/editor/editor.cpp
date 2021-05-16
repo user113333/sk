@@ -217,9 +217,11 @@ namespace editor {
         const char* sprite_sheet = json_object_get_string(root_obj, "sprite_sheet");
         int x = json_object_get_number(root_obj, "sprite_x");
         int y = json_object_get_number(root_obj, "sprite_y");
+        int scale = json_object_get_number(root_obj, "sprite_scale");
         int sprite_count = json_object_get_number(root_obj, "sprite_count");
 
         animation_foreground.initialize(sprite_sheet, x, y);
+        foreground::scale = scale;
         animation_foreground.clear_sprites();
 
         JSON_Array* sprite_arr = json_object_get_array(root_obj, "sprite");
@@ -281,6 +283,7 @@ namespace editor {
         json_object_set_string(root_obj, "sprite_sheet", animation_foreground.get_path());
         json_object_set_number(root_obj, "sprite_x", animation_foreground.get_x());
         json_object_set_number(root_obj, "sprite_y", animation_foreground.get_y());
+        json_object_set_number(root_obj, "sprite_scale", foreground::scale);
         json_object_set_number(root_obj, "sprite_count", animation_foreground.get_sprites_count());
 
         JSON_Value* sprite_arr_val = json_value_init_array();

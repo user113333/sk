@@ -29,6 +29,8 @@ public:
     void frame_remove(int index);
     void frame_pop();
     int frame_count();
+    void frame_next();
+    void frame_prev();
 
     void selection_select();
     void selection_remove(int i);
@@ -57,6 +59,8 @@ public:
     void background_render();
     void background_imgui();
     void background_load(char* path);
+    void background_next();
+    void background_prev();
 
     void zorder_update();
 
