@@ -41,6 +41,7 @@ public:
     bool selection_contains(int index);
     bool selection_is_empty();
     int selection_size();
+    void selection_change(int x, int y);
 
     void foreground_push_back();
     void foreground_load(const char* foreground_path, unsigned int x, unsigned int y);

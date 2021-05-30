@@ -34,6 +34,22 @@ namespace shortcuts {
             editor::get_animation()->background_next();
         }
 
+        if (PRESSED(KEY_UP)) {
+            editor::get_animation()->selection_change(0, 1);
+        }
+        
+        if (PRESSED(KEY_DOWN)) {
+            editor::get_animation()->selection_change(0, -1);
+        }
+
+        if (PRESSED(KEY_LEFT)) {
+            editor::get_animation()->selection_change(-1, 0);
+        }
+
+        if (PRESSED(KEY_RIGHT)) {
+            editor::get_animation()->selection_change(1, 0);
+        }
+
         // ===== CONTROL SHORTCUTS =====
         if (!IsKeyDown(KEY_LEFT_CONTROL)) {
             return;
@@ -82,6 +98,10 @@ namespace shortcuts {
                 editor::export_file(editor::get_file_open());
             }
         }
+
+        if (PRESSED(KEY_R)) {
+            ui::position_windows = true;
+        }
     }
 
     void imgui() {
@@ -94,7 +114,7 @@ namespace shortcuts {
         ImGui::Text("E            Next background");
         ImGui::Text("CTRL+Q       Previous frame");
         ImGui::Text("CTRL+E       Next frame");
-        ImGui::Text("ARROWS       Move for 1 pixel"); // TODO: arrows
+        ImGui::Text("ARROWS       Move for 1 pixel");
         ImGui::Text("CTRL+SPACE   New point");
         ImGui::Text("CTRL+ENTER   New frame");
         ImGui::Text("CTRL+DELETE  Delete selected points");
@@ -103,6 +123,7 @@ namespace shortcuts {
         ImGui::Text("CTRL+V       Paste points");
         ImGui::Text("CTRL+S       Export to file");
         ImGui::Text("CTRL+O       Import from file");
+        ImGui::Text("CTRL+R       Reset workplace");
         ImGui::Text("====================================");
     }
 

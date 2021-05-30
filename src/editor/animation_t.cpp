@@ -168,6 +168,24 @@ int animation_t::selection_size() {
     return selection.size();
 }
 
+void animation_t::selection_change(int x, int y) {
+    for (int i = 0; i < selection.size(); i++) {
+        if (animation_all_frames) {
+            for (int n = 0; n < vector->count_n; n++) {
+                glm::vec3* point = (glm::vec3*) vector2d_get(vector, selection[i], n);
+                
+                point->x += x;
+                point->y += y;
+            }
+        } else {
+            glm::vec3* point = (glm::vec3*) vector2d_get(vector, selection[i], current_frame);
+            
+            point->x += x;
+            point->y += y;
+        }
+    }
+}
+
 // ========== FOREGROUND ==========
 
 void animation_t::foreground_push_back() {

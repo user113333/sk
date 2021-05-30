@@ -1,9 +1,9 @@
 #include "modal.h"
 
 #include <imgui.h>
-#include <raylib.h>
 
-#include "sfd/sfd.h"
+#include "pfd/pfd.h"
+#include "util/input.h"
 
 namespace modal {
 
@@ -40,12 +40,12 @@ namespace modal {
                 ImGui::TextWrapped(str0);
                 ImGui::Separator();
                 
-                if (ImGui::Button("Cancel [ESC]") || IsKeyDown(KEY_ESCAPE)) {
+                if (ImGui::Button("Cancel [ESC]") || input::is_key_down(256)) {
                     ImGui::CloseCurrentPopup();
                 }
 
                 ImGui::SameLine(0, -1);
-                if (ImGui::Button("Continue [Enter]") || IsKeyDown(KEY_ENTER)) {
+                if (ImGui::Button("Continue [Enter]") || input::is_key_down(257)) {
                     ImGui::CloseCurrentPopup();
                     callback("");
                 }
@@ -60,25 +60,17 @@ namespace modal {
                     bool btn = ImGui::Button("..");
                     
                     if (btn && open_modal & MODAL_TYPE_FILE_OPEN) {
-                        sfd_Options opt = {
-                            .title        = "Choose file to read",
-                            .filter       = "*",
-                        };
+                        auto f = pfd::open_file("Choose file to read", "", { "JSON files (.json .sk)", "*.json *.sk", "All Files", "*" }, pfd::opt::none);
 
-                        const char *filename = sfd_open_dialog(&opt);
-                        if (filename != nullptr) {
-                            strcpy(str1, filename);
-                        }
+                        for (auto const &filename : f.result())
+                            strcpy(str1, filename.c_str());
                     }
 
                     if (btn && open_modal & MODAL_TYPE_FILE_SAVE) {
-                        sfd_Options opt = {
-                            .title        = "Choose file to save",
-                        };
-
-                        const char *filename = sfd_save_dialog(&opt);
-                        if (filename != nullptr) {
-                            strcpy(str1, filename);
+                        auto f = pfd::save_file("Choose file to save to", "", { "JSON files (.json .sk)", "*.json *.sk", "All Files", "*" }, pfd::opt::none);
+                        std::string filename = f.result().c_str();
+                        if (filename.length() != 0) {
+                            strcpy(str1, filename.c_str());
                         }
                     }
 
@@ -89,12 +81,12 @@ namespace modal {
                 ImGui::InputText("", str1, IM_ARRAYSIZE(str1));
                 ImGui::Separator();
 
-                if (ImGui::Button("Cancel [ESC]") || IsKeyDown(KEY_ESCAPE)) {
+                if (ImGui::Button("Cancel [ESC]") || input::is_key_down(256)) {
                     ImGui::CloseCurrentPopup();
                 }
 
                 ImGui::SameLine(0, -1);
-                if (ImGui::Button("Continue [Enter]") || IsKeyDown(KEY_ENTER)) {
+                if (ImGui::Button("Continue [Enter]") || input::is_key_down(257)) {
                     ImGui::CloseCurrentPopup();
                     callback(str1);
                 }

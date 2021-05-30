@@ -11,7 +11,6 @@ namespace ui {
 
     void update() {
         static bool window_demo = false;
-        static bool position_windows = false;
 
         if (!show_imgui) {
             return;
@@ -54,7 +53,7 @@ namespace ui {
 
                 ImGui::Separator();
 
-                if (ImGui::MenuItem("Reset workplace")) { position_windows = true; }
+                if (ImGui::MenuItem("Reset workplace", "CTRL+R")) { position_windows = true; }
 
                 ImGui::EndMenu();
             }
