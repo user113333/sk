@@ -1,6 +1,8 @@
 #include <raylib.h>
 #include <imgui.h>
 
+#include <string>
+
 #include "editor/editor.h"
 #include "ui/ui.h"
 #include "imgui/modal.h"
@@ -96,6 +98,7 @@ namespace shortcuts {
                 modal::open("Export file path: ", "out", editor::export_file, MODAL_TYPE_FILE_SAVE);
             } else {
                 editor::export_file(editor::get_file_open());
+                modal::notify("File saved", (std::string("File saved to: ") + editor::get_file_open()).c_str());
             }
         }
 

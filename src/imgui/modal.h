@@ -14,4 +14,6 @@ enum MODAL_TYPE {
 namespace modal {
     void open(const char* message, const char* default_input, void (*callback_func)(char*), MODAL_TYPE type);
     void update();
+
+    void notify(const char* title, const char* str);
 }

@@ -96,4 +96,8 @@ namespace modal {
         }
     }
 
+    void notify(const char* title, const char* str) {
+        pfd::notify::notify(title, str);
+    }
+
 }
