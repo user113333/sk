@@ -18,6 +18,7 @@ add_subdirectory(lib/raylib)
 
 if (WIN32)
     set(LIBS ${LIBS} imm32)
+    set(EXE_ADD WIN32)
 endif ()
 
 include_directories(
@@ -28,7 +29,7 @@ include_directories(
     ${PFD_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${EXE_ADD} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
