@@ -88,6 +88,11 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
     for (int i = 0; i < sprites.size(); i++) {
         src_y = sprites[i].foreground_y * texture_size_y;
         dest_height = src_height * scale;
+
+        Color c = Color{200, 255, 0, 255};
+        if (!window_sprites_focused || i != window_sprites_selected) {
+            c = WHITE;
+        }
         
         dest.ratio = sprites[i].ratio;
         dest.a = *(glm::vec3*)vector2d_get(vector2d, sprites[i].point_a, n);
@@ -126,7 +131,7 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
             { p.x, p.y, dest_width, dest_height },
             { dest_width / 2, dest_height / 2 },
             sprites[i].point_a == sprites[i].point_b ? 0 : foreground_calc_rotation(&dest),
-            WHITE
+            c
         );
     }
 }
@@ -201,7 +206,7 @@ void foreground_t::render_imgui(int count_m) {
         ImGui::EndTooltip();
     }
 
-    if (selected < 0) {
+    if (window_sprites_selected < 0 || !window_sprites_focused) {
         return;
     }
 
@@ -214,12 +219,12 @@ void foreground_t::render_imgui(int count_m) {
     p1.x += ImGui::GetWindowPos().x;
     p1.y += ImGui::GetWindowPos().y;
 
-    draw_list->PushClipRect(p0, p1);
+    // draw_list->PushClipRect(p0, p1);
 
     p0 = ImGui::GetItemRectMin();
     p1 = ImGui::GetItemRectMax();
     
-    p0.y += sprites[selected].foreground_y * texture_size_y * zoom;
+    p0.y += sprites[window_sprites_selected].foreground_y * texture_size_y * zoom;
     p1.y = p0.y + texture_size_y * zoom;
     
     draw_list->AddRect(p0, p1, IM_COL32(200, 255, 0, 255), 0, 0, 2);
@@ -227,10 +232,11 @@ void foreground_t::render_imgui(int count_m) {
     p1.x = p0.x + texture_size_x * zoom;
     draw_list->AddRect(p0, p1, IM_COL32(200, 255, 0, 255), 0, 0, 2);
     
-    draw_list->PopClipRect();
+    // draw_list->PopClipRect();
 }
 
 void foreground_t::render_sprites_imgui(int count_m) {
+    window_sprites_focused = ImGui::IsWindowFocused() || ImGui::IsAnyItemFocused();
     static char str[10];
 
     ImGui::Checkbox("Display sprites", &foreground::display);
@@ -239,13 +245,15 @@ void foreground_t::render_sprites_imgui(int count_m) {
     if (ImGui::BeginListBox("Sprites", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
         for (int i = 0; i < sprites.size(); i++) {
             sprite_t sprite = sprites.at(i);
-            bool is_selected = selected == i;
+            bool is_selected = window_sprites_selected == i;
             
             util::itoa(str, i);
 
             if (ImGui::Selectable(str, is_selected) || (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))) {
-                selected = i;
+                window_sprites_selected = i;
             }
+
+            window_sprites_focused |= ImGui::IsItemFocused();
 
             if (ImGui::BeginPopupContextItem()) {
                 ImGui::Text("sprite(y: %d, ratio: %d, a: %d, b: %d)", sprite.foreground_y, sprite.ratio, sprite.point_a, sprite.point_b);
@@ -253,8 +261,8 @@ void foreground_t::render_sprites_imgui(int count_m) {
 
                 if (ImGui::Button("Delete")) {
                     remove_sprite(i);
-                    if (selected >= sprites.size()) {
-                        selected = sprites.size() - 1;
+                    if (window_sprites_selected >= sprites.size()) {
+                        window_sprites_selected = sprites.size() - 1;
                     }
 
                     ImGui::CloseCurrentPopup();
@@ -273,13 +281,13 @@ void foreground_t::render_sprites_imgui(int count_m) {
         add_sprite();
     }
 
-    ImGui::Text("Selected sprite[%d]: ", selected);
+    ImGui::Text("Selected sprite[%d]: ", window_sprites_selected);
     
-    if (selected < 0) {
+    if (window_sprites_selected < 0) {
         return;
     }
 
-    sprite_t& sprite = sprites.at(selected);
+    sprite_t& sprite = sprites.at(window_sprites_selected);
     ImGui::SliderInt("foreground_y", &sprite.foreground_y, 0, texture.height == 0 ? 0 : texture.height / texture_size_y - 1);
     ImGui::SliderFloat("ratio", &sprite.ratio, 0, 1);
     ImGui::SliderInt("point_a", &sprite.point_a, 0, count_m == 0 ? 0 : count_m - 1);

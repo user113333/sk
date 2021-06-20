@@ -11,6 +11,7 @@
 #include "views/views.h"
 
 static glm::vec3 point_null = { 0, 0, 0 };
+static int ctrl_on_mkey_down = false;
 
 // ========== CONSTRUCTS ==========
 
@@ -307,14 +308,22 @@ void animation_t::update_select() {
 }
 
 void animation_t::update() {
+    if (mouse::is_locked()) {
+        return;
+    }
+
     animation_t* animation = editor::get_animation();
 
-    if (IsKeyDown(KEY_LEFT_CONTROL)) {
-        if (mouse::is_down() && !mouse::is_locked()) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        ctrl_on_mkey_down = IsKeyDown(KEY_LEFT_CONTROL);
+    }
+
+    if (ctrl_on_mkey_down) {
+        if (mouse::is_down()) {
             animation->update_move(animation_all_frames);
         }
     } else {
-        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON) && !mouse::is_locked()) {
+        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
             animation->update_select();
         }
     }
@@ -413,7 +422,7 @@ void animation_t::render_points(bool zorder) {
 }
 
 void animation_t::render_select_rect() {
-    if (mouse::is_down() && !mouse::is_locked() && !IsKeyDown(KEY_LEFT_CONTROL)) {
+    if (mouse::is_down() && !mouse::is_locked() && !ctrl_on_mkey_down) {
         glm::vec4 select = mouse::select_rect();
         DrawRectangle(select.x, select.y, select.z, select.w, COLOR_SELECT);
         DrawRectangleLines(select.x, select.y, select.z, select.w, COLOR_PRIMARY);
@@ -437,6 +446,15 @@ void animation_t::render_imgui_points() {
     ImGui::Text("Points: ");
     static int selected_1 = 0;
     if (ImGui::BeginListBox("Points", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing()))) {
+
+        // left click on listbox
+        // if (ImGui::BeginPopupContextWindow("points_new")) {
+        //     if ((ImGui::Button("New Point")) {
+        //     }
+
+        //     ImGui::EndPopup();
+        // }
+
         for (int i = 0; i < point_count(); i++) {
             bool is_selected = selected_1 == i;
             glm::vec3* point = point_get(i);

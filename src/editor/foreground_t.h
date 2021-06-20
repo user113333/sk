@@ -34,7 +34,9 @@ private:
     char path[100] = "\0";
     ground_t ground;
     std::vector<sprite_t> sprites;
-    int selected = -1;
+
+    int window_sprites_focused = false;
+    int window_sprites_selected = -1;
 
     Texture2D texture;
     float texture_size_x = 0;
