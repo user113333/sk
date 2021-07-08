@@ -245,11 +245,13 @@ namespace editor {
         for (int i = 0; i < anim_count; i++) {
             JSON_Object* anim_obj = json_array_get_object(anim_arr, i);
             const char* name = json_object_get_string(anim_obj, "name");
+            int fps = json_object_get_number(anim_obj, "fps");
             int count_m = json_object_get_number(anim_obj, "count_m");
             int count_n = json_object_get_number(anim_obj, "count_n");
 
             animation_t* animation = new_animation();
             strcpy(animation->get_name(), name);
+            animation->set_fps(fps);
             animation->set_count_m(count_m);
             animation->set_count_n(count_n);
 
@@ -315,6 +317,7 @@ namespace editor {
             animation_t* animation = animations[i];
 
             json_object_set_string(anim_obj, "name", animation->get_name());
+            json_object_set_number(anim_obj, "fps", animation->get_fps());
             json_object_set_number(anim_obj, "count_m", animation->get_count_m());
             json_object_set_number(anim_obj, "count_n", animation->get_count_n());
 

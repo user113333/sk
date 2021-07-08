@@ -51,8 +51,8 @@ inline window_t windows[] = {
     { "Foreground window", foreground_imgui, false, true, 5 },
     { "Sprites window", foreground_sprites_imgui, false, true, 1 },
     { "Ground window", ground_imgui, false, false },
-    { "Background window", background_imgui, false, true, 4 },
-    { "Play window", play_imgui, false, false },
+    { "Background window", background_imgui, false, false },
+    { "Play window", play_imgui, false, true, 4 },
 
     { "Settings window", settings::imgui, true, false },
     { "Shortcuts window", shortcuts::imgui, false, false }

@@ -82,8 +82,10 @@ public:
     void clipboard_copy();
     void clipboard_paste();
 
+    float get_fps();
     int get_count_m();
     int get_count_n();
+    void set_fps(float num);
     void set_count_m(int m);
     void set_count_n(int n);
 

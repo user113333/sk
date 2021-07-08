@@ -650,12 +650,20 @@ void animation_t::clipboard_paste() {
 
 // ========== VARS ==========
 
+float animation_t::get_fps() {
+    return play.fps;
+}
+
 int animation_t::get_count_m() {
     return count_m;
 }
 
 int animation_t::get_count_n() {
     return vector->count_n;
+}
+
+void animation_t::set_fps(float num) {
+    play.fps = num;
 }
 
 void animation_t::set_count_m(int m) {

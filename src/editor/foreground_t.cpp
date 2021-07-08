@@ -119,7 +119,7 @@ void foreground_t::render(vector2d_t* vector2d, int n, float delta, float rotati
 
         glm::vec3 p = foreground_calc_dest(&dest);
 
-        // TODO: ratio - scale interferance
+        // TODO: ratio - scale interferance <- ????
         float hypot = hypotf(dest_a.x - dest_b.x, dest_a.y - dest_b.y);
         if (sprites[i].point_a != sprites[i].point_b && (src_height * scale > hypot)) {
             dest_height = hypot;

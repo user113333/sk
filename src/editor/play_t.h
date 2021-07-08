@@ -7,8 +7,9 @@ public:
 
     void imgui();
 
-private:
+public:
     float fps = 14;
+private:
     int current_frame = 0;
     bool enabled = false;
     bool smoothstep = true;
