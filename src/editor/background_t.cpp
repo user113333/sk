@@ -50,11 +50,10 @@ void background_t::load_background(char* path) {
     textures.clear();
     index = 0;
 
-    int count;
-    char** files = GetDirectoryFiles(path, &count);
-
-    for (int i = 0; i < count; i++) {
-        char* file_name = files[i];
+    FilePathList files = LoadDirectoryFiles(path);
+    
+    for (int i = 0; i < files.count; i++) {
+        char* file_name = files.paths[i];
 
         if (!util::strcmparr(strstr(file_name, ".") + 1, image_extensions, IM_ARRAYSIZE(image_extensions))) {
             continue;
@@ -82,6 +81,8 @@ void background_t::load_background(char* path) {
         bt.texture = texture;
         textures.push_back(bt);
     }
+
+    UnloadDirectoryFiles(files);
 
     struct {
         bool operator()(background_texture_t a, background_texture_t b) const { return util::strcompare(a.path, b.path) < 0; }

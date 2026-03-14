@@ -37,9 +37,9 @@ namespace editor {
 
         // drop files
         if (IsFileDropped()) {
-            static int files_count = 0;
-            modal::open("Import file path: ", GetDroppedFiles(&files_count)[0], editor::import_file, MODAL_TYPE_FILE_OPEN);
-            ClearDroppedFiles();
+            FilePathList files = LoadDroppedFiles();
+            modal::open("Import file path: ", files.paths[0], editor::import_file, MODAL_TYPE_FILE_OPEN);
+            UnloadDroppedFiles(files);
         }
 
         VIEWS_UPDATE(view);

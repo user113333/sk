@@ -4,6 +4,7 @@ project(sk)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_SUPPRESS_REGENERATION ON)
 
+add_compile_definitions(NO_FONT_AWESOME)
 set(PFD_INCLUDE_DIRS "lib/portable-file-dialogs")
 set(RAYLIB_INCLUDE_DIRS "lib/raylib/src/external")
 set(IMGUI_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/lib/imgui")
