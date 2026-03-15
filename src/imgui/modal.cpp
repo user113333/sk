@@ -1,8 +1,8 @@
 #include "modal.h"
 
 #include <imgui.h>
+#include <portable-file-dialogs.h>
 
-#include "pfd/pfd.h"
 #include "util/input.h"
 
 namespace modal {
@@ -78,7 +78,7 @@ namespace modal {
                 }
                 
                 ImGui::SetNextItemWidth(450);
-                ImGui::InputText("", str1, IM_ARRAYSIZE(str1));
+                ImGui::InputText("###Modal", str1, IM_ARRAYSIZE(str1));
                 ImGui::Separator();
 
                 if (ImGui::Button("Cancel [ESC]") || input::is_key_down(256)) {

@@ -13,7 +13,7 @@ int main(int, char**) {
     texture_point = LoadTexture(ASSETS_PATH "point.png");
     font_main = LoadFontEx(ASSETS_PATH "plex.ttf", 25, NULL, 0);
 
-    SetTargetFPS(144);
+    // SetTargetFPS(144);
 
     editor::initialize();
     imgui_layer::initialize();
