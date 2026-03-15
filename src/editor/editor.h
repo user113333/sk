@@ -1,6 +1,7 @@
 #pragma once
 
 #include <raylib.h>
+#include <string>
 
 #include "animation_t.h"
 
@@ -24,8 +25,8 @@ namespace editor {
     bool file_is_open();
     void file_prepend_path(char* str);
     
-    void create_new(char* str);
-    void import_file(char* str);
+    void create_new();
+    void import_file(std::string str);
     void export_file(char* str);
     char* get_file_open();
 

@@ -5,7 +5,6 @@
 
 #include "editor/editor.h"
 #include "ui/ui.h"
-#include "imgui/modal.h"
 #include "views/views.h"
 #include "editor/background_t.h"
 
@@ -22,10 +21,6 @@ namespace shortcuts {
                 
                 editor::view = i;
             }
-        }
-
-        if (PRESSED(KEY_GRAVE)) {
-            ui::show_imgui = !ui::show_imgui;
         }
 
         if ((!IsKeyDown(KEY_LEFT_CONTROL) || editor::bg_with_frames) && PRESSED(KEY_Q)) {
@@ -89,18 +84,18 @@ namespace shortcuts {
             editor::get_animation()->clipboard_paste();
         }
 
-        if (PRESSED(KEY_O)) {
-            modal::open("Import file path: ", "out", editor::import_file, MODAL_TYPE_FILE_OPEN);
-        }
+        // if (PRESSED(KEY_O)) {
+        //     modal::open("Import file path: ", "out", editor::import_file, MODAL_TYPE_FILE_OPEN);
+        // }
 
-        if (PRESSED(KEY_S)) {
-            if (editor::get_file_open()[0] == '\0') {
-                modal::open("Export file path: ", "out", editor::export_file, MODAL_TYPE_FILE_SAVE);
-            } else {
-                editor::export_file(editor::get_file_open());
-                modal::notify("File saved", (std::string("File saved to: ") + editor::get_file_open()).c_str());
-            }
-        }
+        // if (PRESSED(KEY_S)) {
+        //     if (editor::get_file_open()[0] == '\0') {
+        //         modal::open("Export file path: ", "out", editor::export_file, MODAL_TYPE_FILE_SAVE);
+        //     } else {
+        //         editor::export_file(editor::get_file_open());
+        //         modal::notify("File saved", (std::string("File saved to: ") + editor::get_file_open()).c_str());
+        //     }
+        // }
 
         if (PRESSED(KEY_R)) {
             ui::position_windows = true;

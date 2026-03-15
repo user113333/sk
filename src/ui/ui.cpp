@@ -3,29 +3,35 @@
 #include <imgui.h>
 
 #include "editor/editor.h"
-#include "imgui/modal.h"
+#include "imgui/imgui_modal.h"
 #include "views/views.h"
 #include "core.h"
 
 namespace ui {
 
-    void update() {
-        static bool window_demo = false;
+    ImGuiModal modal;
 
-        if (!show_imgui) {
-            return;
-        }
+    void OpenFile()
+    {
+        modal.OpenFileRead("Import file path: ", {"JSON files (.json .sk)", "*.json *.sk", "All Files", "*"}, editor::import_file);
+    }
 
-        if (window_demo) {
-            ImGui::ShowDemoWindow(&window_demo);
+    void DrawMainMenu()
+    {
+        if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_O)) {
+            OpenFile();
         }
 
         if (ImGui::BeginMainMenuBar()) {
+
             if (ImGui::BeginMenu("File")) {
-                if (ImGui::MenuItem("New")) { modal::open("All the unsaved changes will be lost! Are you sure you want to continue?", "", editor::create_new, MODAL_TYPE_MESSAGE); }
+                if (ImGui::MenuItem("New")) { modal.OpenYesNo("All the unsaved changes will be lost! Are you sure you want to continue?", editor::create_new); }
                 ImGui::Separator();
-                if (ImGui::MenuItem("Open..", "CTRL+O")) { modal::open("Import file path: ", "out", editor::import_file, MODAL_TYPE_FILE_OPEN); }
-                if (ImGui::MenuItem("Save..", "CTRL+S")) { modal::open("Export file path: ", "out", editor::export_file, MODAL_TYPE_FILE_SAVE); }
+                ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_O);
+                if (ImGui::MenuItem("Open..", "Ctrl+O")) {
+                    OpenFile();   
+                }
+                // if (ImGui::MenuItem("Save..", "CTRL+S")) { modal::open("Export file path: ", "out", editor::export_file, MODAL_TYPE_FILE_SAVE); }
 
                 ImGui::EndMenu();
             }
@@ -88,6 +94,15 @@ namespace ui {
             ImGui::Text(views[editor::view].name);
 
             ImGui::EndMainMenuBar();
+        }
+    }
+
+    void update() {
+        DrawMainMenu();
+        modal.Draw();
+
+        if (window_demo) {
+            ImGui::ShowDemoWindow(&window_demo);
         }
 
         static int window_flags = ImGuiWindowFlags_NoCollapse;

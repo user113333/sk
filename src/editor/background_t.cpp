@@ -7,7 +7,6 @@
 
 #include "editor.h"
 #include "util/util.h"
-#include "imgui/modal.h"
 #include "util/fs.h"
 
 const char* image_extensions[] = {
@@ -116,7 +115,8 @@ void background_t::render() {
 
 void background_t::imgui() {
     if (ImGui::Button("Load Background")) {
-        modal::open("Locate the directory that contains the background images", "background", editor::background_load, MODAL_TYPE_DIRECTORY_OPEN);
+        // TODO
+        // modal::open("Locate the directory that contains the background images", "background", editor::background_load, MODAL_TYPE_DIRECTORY_OPEN);
     }
     
     ImGui::Checkbox("Display background", &display);

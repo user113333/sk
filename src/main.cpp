@@ -6,7 +6,7 @@
 #include "core.h"
 
 int main(int, char**) {
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_MAXIMIZED);
     InitWindow(1600, 900, "sk");
     SetExitKey(0);
 

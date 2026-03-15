@@ -11,7 +11,7 @@
 #include "core.h"
 #include "views/views.h"
 #include "util/util.h"
-#include "imgui/modal.h"
+#include "imgui/imgui_modal.h"
 #include "util/parson.h"
 
 namespace editor {
@@ -38,7 +38,8 @@ namespace editor {
         // drop files
         if (IsFileDropped()) {
             FilePathList files = LoadDroppedFiles();
-            modal::open("Import file path: ", files.paths[0], editor::import_file, MODAL_TYPE_FILE_OPEN);
+            // TODO
+            // modal::open("Import file path: ", files.paths[0], editor::import_file, MODAL_TYPE_FILE_OPEN);
             UnloadDroppedFiles(files);
         }
 
@@ -198,20 +199,20 @@ namespace editor {
         strcpy(str, temp);
     }
 
-    void create_new(char* str) {
+    void create_new() {
         animations.clear();
         animation_foreground.clear_sprites();
         new_animation();
     }
 
-    void import_file(char* str) {
-        JSON_Value* root_val = json_parse_file(str);
+    void import_file(std::string str) {
+        JSON_Value* root_val = json_parse_file(str.c_str());
         
         if (root_val == NULL) {
             return;
         }
         
-        strcpy(file_open, str);
+        strcpy(file_open, str.c_str());
         JSON_Object* root_obj = json_value_get_object(root_val);
 
         const char* sprite_sheet = json_object_get_string(root_obj, "sprite_sheet");

@@ -1,11 +1,9 @@
 #include <imgui.h>
-#include <imgui/imgui_impl_raylib.h>
-
-#include <imgui/rlImGui.h>
-
 #include <imgui_internal.h>
 
-#include "modal.h"
+#include "external/imgui_impl_raylib.h"
+#include "external/rlImGui.h"
+#include "imgui_modal.h"
 #include "ui/ui.h"
 
 namespace imgui_layer {
@@ -17,11 +15,11 @@ namespace imgui_layer {
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
-        ImGui::StyleColorsClassic();
-
+        
         ImGui_ImplRaylib_Init();
-
-        io.Fonts->AddFontFromFileTTF(ASSETS_PATH "plex.ttf", 20.0f);
+        
+        ImGui::StyleColorsDark();
+        // io.Fonts->AddFontFromFileTTF(ASSETS_PATH "plex.ttf", 15.0f);
     }
 
     void update() {
@@ -30,7 +28,6 @@ namespace imgui_layer {
         ImGui::NewFrame();
 
         ui::update();
-        modal::update();
 
         // Rendering
         ImGui::Render();
