@@ -1,0 +1,1 @@
+- Replace JSON save format with FlatBuffer (store images in the export)
