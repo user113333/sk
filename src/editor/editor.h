@@ -20,8 +20,6 @@ namespace editor {
     void delete_frame(int index);
     void delete_animation(int index);
 
-    void background_load(char* path);
-
     bool file_is_open();
     void file_prepend_path(char* str);
     
@@ -36,7 +34,7 @@ namespace editor {
     // VARS
     inline bool bg_with_frames = false;
     inline bool precise_select = true;
-    inline int view = 1;
+    inline int view = 0;
 
     inline bool display_points = true;
 }

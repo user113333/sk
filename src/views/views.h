@@ -1,8 +1,11 @@
 #pragma once
 
+#include <imgui.h>
+
 #include "settings.h"
 #include "shortcuts.h"
 #include "foreground.h"
+#include "editor/editor.h"
 
 #define VIEWS_UPDATE(X) if (views[X].update != nullptr) views[X].update()
 #define VIEWS_RENDER(X) if (views[X].render != nullptr) views[X].render()
@@ -16,6 +19,8 @@ struct window_t {
     bool imgui_window = true;
 
     int workplace_position = -1;
+
+    int flags = 0;
 };
 
 struct view_t {
@@ -25,6 +30,7 @@ struct view_t {
     void (*render)(void);
 };
 
+void camera_update();
 void points_imgui();
 void points_update();
 void points_render();
@@ -51,7 +57,7 @@ inline window_t windows[] = {
     { "Foreground window", foreground_imgui, false, true, 5 },
     { "Sprites window", foreground_sprites_imgui, false, true, 1 },
     { "Ground window", ground_imgui, false, false },
-    { "Background window", background_imgui, false, false },
+    { "Background window", background_imgui, false, true, -1, ImGuiWindowFlags_MenuBar },
     { "Play window", play_imgui, false, true, 4 },
 
     { "Settings window", settings::imgui, true, false },
@@ -59,7 +65,7 @@ inline window_t windows[] = {
 };
 
 inline view_t views[] {
-    { "Master view", nullptr, nullptr },
+    { "Master view", camera_update, nullptr },
     { "Points view", points_update, points_render },
     { "Z oreder view", zorder_update, points_render },
     { "Foreground view", foreground::update, nullptr },

@@ -3,7 +3,16 @@
 namespace camera {
 
     void update() {
-        camera.offset = { GetScreenWidth()/2.0f, GetScreenHeight()/2.0f };
+        
+    }
+
+    void Center()
+    {
+        camera.target.x = -(GetScreenWidth() / 2);
+        camera.target.y = -(GetScreenHeight() / 2);
+        camera.offset = { 0, 0 };
+        camera.zoom = 1;
+        camera.rotation = 0;
     }
 
 }

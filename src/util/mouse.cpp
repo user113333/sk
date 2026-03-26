@@ -16,11 +16,9 @@ namespace mouse {
         prev.x = current.x;
         prev.y = current.y;
 
-        current.x = GetMousePosition().x + camera::camera.target.x;
-        current.y = GetMousePosition().y + camera::camera.target.y;
-
-        current.x -= camera::camera.offset.x;
-        current.y -= camera::camera.offset.y;
+        Vector2 world_click = GetScreenToWorld2D(GetMousePosition(), camera::camera);
+        current.x = world_click.x;
+        current.y = world_click.y;
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             pressed = current;
@@ -45,7 +43,10 @@ namespace mouse {
 
     glm::vec4 select_rect() {
         glm::vec2 select_size = { current.x - pressed.x, current.y - pressed.y };
-        return { (select_size.x > 0 ? pressed.x : pressed.x + select_size.x), (select_size.y > 0 ? pressed.y : pressed.y + select_size.y), abs(select_size.x), abs(select_size.y)};
+        return { (select_size.x > 0 ? pressed.x : pressed.x + select_size.x),
+            (select_size.y > 0 ? pressed.y : pressed.y + select_size.y),
+            abs(select_size.x),
+            abs(select_size.y)};
     }
 
     float scroll_delta() {

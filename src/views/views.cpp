@@ -1,5 +1,33 @@
-#include "editor/editor.h"
 #include "views.h"
+
+#include <raylib.h>
+#include <raymath.h>
+
+#include "editor/editor.h"
+#include "util/camera.h"
+#include "imgui/imgui_layer.h"
+
+void camera_update()
+{
+    if (imgui_layer::mouse_locked()) return;
+    
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        Vector2 delta = GetMouseDelta();
+        delta = Vector2Scale(delta, -1.0f/camera::camera.zoom);
+        camera::camera.target = Vector2Add(camera::camera.target, delta);
+    }
+
+    float wheel = GetMouseWheelMove();
+    if (wheel != 0)
+    {
+        Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera::camera);
+        camera::camera.offset = GetMousePosition();
+        camera::camera.target = mouseWorldPos;
+        float scale = 0.2f*wheel;
+        camera::camera.zoom = Clamp(expf(logf(camera::camera.zoom)+scale), 0.125f, 64.0f);
+    }
+}
 
 void points_imgui() {
     editor::get_animation()->render_imgui_points();

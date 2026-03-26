@@ -3,17 +3,14 @@
 #include <imgui.h>
 
 #include "editor/editor.h"
-#include "imgui/imgui_modal.h"
 #include "views/views.h"
 #include "core.h"
 
 namespace ui {
 
-    ImGuiModal modal;
-
     void OpenFile()
     {
-        modal.OpenFileRead("Import file path: ", {"JSON files (.json .sk)", "*.json *.sk", "All Files", "*"}, editor::import_file);
+        Modal.OpenFileRead("Import file path: ", {"JSON files (.json .sk)", "*.json *.sk", "All Files", "*"}, editor::import_file);
     }
 
     void DrawMainMenu()
@@ -25,7 +22,7 @@ namespace ui {
         if (ImGui::BeginMainMenuBar()) {
 
             if (ImGui::BeginMenu("File")) {
-                if (ImGui::MenuItem("New")) { modal.OpenYesNo("All the unsaved changes will be lost! Are you sure you want to continue?", editor::create_new); }
+                if (ImGui::MenuItem("New")) { Modal.OpenYesNo("All the unsaved changes will be lost! Are you sure you want to continue?", editor::create_new); }
                 ImGui::Separator();
                 ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_O);
                 if (ImGui::MenuItem("Open..", "Ctrl+O")) {
@@ -99,7 +96,7 @@ namespace ui {
 
     void update() {
         DrawMainMenu();
-        modal.Draw();
+        Modal.Draw();
 
         if (window_demo) {
             ImGui::ShowDemoWindow(&window_demo);
@@ -162,7 +159,7 @@ namespace ui {
                     }
                 }
 
-                ImGui::Begin(windows[i].name, &windows[i].imgui_window, window_flags);
+                ImGui::Begin(windows[i].name, &windows[i].imgui_window, window_flags | windows[i].flags);
                 WINDOWS_IMGUI(i);
                 ImGui::End();
             }

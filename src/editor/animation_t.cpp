@@ -238,27 +238,23 @@ void animation_t::ground_imgui() {
 // ========== BACKGROUND ==========
 
 void animation_t::background_update() {
-    animation_background.update();
+    animation_background.Update();
 }
 
 void animation_t::background_render() {
-    animation_background.render();
+    animation_background.Render();
 }
 
 void animation_t::background_imgui() {
-    animation_background.imgui();
-}
-
-void animation_t::background_load(char* path) {
-    animation_background.load_background(path);
+    animation_background.Imgui();
 }
 
 void animation_t::background_next() {
-    animation_background.next();
+    animation_background.Next();
 }
 
 void animation_t::background_prev() {
-    animation_background.prev();
+    animation_background.Prev();
 }
 
 // ========== Z-ORDER ==========

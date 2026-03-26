@@ -120,8 +120,10 @@ namespace editor {
         }
 
         ImGui::Text("Camera properties: ");
-        ImGui::DragFloat("X", &camera::camera.target.x, 1.0, 0, 0, "%.0f");
-        ImGui::DragFloat("Y", &camera::camera.target.y, 1.0, 0, 0, "%.0f");
+        ImGui::DragFloat2("target", reinterpret_cast<float*>(&camera::camera.target));
+        ImGui::DragFloat2("offset", reinterpret_cast<float*>(&camera::camera.offset));
+        ImGui::DragFloat("zoom", &camera::camera.zoom);
+        ImGui::DragFloat("rotation", &camera::camera.rotation);
 
         ImGui::Text("Animation[%s] properties: ", animation_selected->get_name());
         ImGui::InputText("name", animation_selected->get_name(), ANIMATION_NAME_LENGTH);
@@ -173,12 +175,6 @@ namespace editor {
         if (animations_selected >= animations.size()) {
             animations_selected = animations.size() - 1;
         }
-    }
-
-    // ========== BACKGROUND ==========
-
-    void background_load(char* path) {
-        get_animation()->background_load(path);
     }
 
     // ========== FILE ==========

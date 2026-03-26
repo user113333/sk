@@ -6,7 +6,7 @@
 #include "editor/editor.h"
 #include "ui/ui.h"
 #include "views/views.h"
-#include "editor/background_t.h"
+#include "editor/background.h"
 
 #define PRESSED(X) IsKeyPressed(X)
 

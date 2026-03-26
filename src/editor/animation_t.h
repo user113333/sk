@@ -5,7 +5,7 @@
 #include <vec3.hpp>
 #include <vec4.hpp>
 #include "foreground_t.h"
-#include "background_t.h"
+#include "background.h"
 #include "play_t.h"
 
 #define ANIMATION_NAME_LENGTH 50
@@ -59,7 +59,6 @@ public:
     void background_update();
     void background_render();
     void background_imgui();
-    void background_load(char* path);
     void background_next();
     void background_prev();
 
@@ -99,4 +98,4 @@ private:
 };
 
 inline foreground_t animation_foreground;
-inline background_t animation_background;
+inline Background animation_background;
