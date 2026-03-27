@@ -5,6 +5,7 @@
 #include "editor/editor.h"
 #include "views/views.h"
 #include "core.h"
+#include "util/camera.h"
 
 namespace ui {
 
@@ -85,6 +86,10 @@ namespace ui {
                 if (ImGui::MenuItem("Paste selected from clipboard", "CTRL+V")) { editor::get_animation()->clipboard_paste(); }
 
                 ImGui::EndMenu();
+            }
+
+            if (ImGui::MenuItem("Center Camera")) {
+                camera::Center();
             }
 
             ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize(views[editor::view].name).x - 30);
