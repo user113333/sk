@@ -3,8 +3,6 @@
 #include <imgui.h>
 #include <portable-file-dialogs.h>
 
-#include "util/input.h"
-
 using namespace ImGui;
 
 void ImGuiModal::Open()

@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <raylib.h>
 
-#include "editor.h"
+#include "ui/editor.h"
 #include "util/util.h"
 
 void ground_t::update() {

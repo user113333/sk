@@ -1,0 +1,18 @@
+Raylib stays
+ImGui stays
+
+Src structure
+    src/lib
+        pack: multiple animations
+
+    src/editor
+        editor: interaction with main picture, needs pack
+        modes: different editing modes
+    
+    src/ui
+        ui: imgui elements
+        windows: imgui windows, needs lib/.. (friend class Windows)
+
+    src/util -> Global static helpers for Raylib
+
+    src/imgui -> Global static helpers for ImGui

@@ -3,9 +3,9 @@
 
 #include <string>
 
-#include "editor/editor.h"
+#include "ui/editor.h"
 #include "ui/ui.h"
-#include "views/views.h"
+#include "ui/views.hpp"
 #include "editor/background.h"
 
 #define PRESSED(X) IsKeyPressed(X)
@@ -13,15 +13,15 @@
 namespace shortcuts {
 
     void update() {
-        for (int i = 0; i < 8; i++) {
-            if (PRESSED(KEY_ONE + i)) {
-                if (i >= IM_ARRAYSIZE(views)) {
-                    continue;
-                }
+        // for (int i = 0; i < 8; i++) {
+        //     if (PRESSED(KEY_ONE + i)) {
+        //         if (i >= IM_ARRAYSIZE(views)) {
+        //             continue;
+        //         }
                 
-                editor::view = i;
-            }
-        }
+        //         editor::view = i;
+        //     }
+        // }
 
         if ((!IsKeyDown(KEY_LEFT_CONTROL) || editor::bg_with_frames) && PRESSED(KEY_Q)) {
             editor::get_animation()->background_prev();

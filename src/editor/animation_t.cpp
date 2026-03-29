@@ -5,10 +5,11 @@
 #include <cstring>
 #include <algorithm>
 
-#include "editor.h"
+#include "ui/editor.h"
+#include "ui/views.hpp"
 #include "util/util.h"
+#include "views/foreground.h"
 #include "core.h"
-#include "views/views.h"
 
 static glm::vec3 point_null = { 0, 0, 0 };
 static int ctrl_on_mkey_down = false;

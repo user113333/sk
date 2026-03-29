@@ -1,9 +1,10 @@
 #include "ui.h"
 
 #include <imgui.h>
+#include <string>
 
-#include "editor/editor.h"
-#include "views/views.h"
+#include "editor.h"
+#include "views.hpp"
 #include "core.h"
 #include "util/camera.h"
 
@@ -25,7 +26,6 @@ namespace ui {
             if (ImGui::BeginMenu("File")) {
                 if (ImGui::MenuItem("New")) { Modal.OpenYesNo("All the unsaved changes will be lost! Are you sure you want to continue?", editor::create_new); }
                 ImGui::Separator();
-                ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_O);
                 if (ImGui::MenuItem("Open..", "Ctrl+O")) {
                     OpenFile();   
                 }
@@ -35,29 +35,26 @@ namespace ui {
             }
 
             if (ImGui::BeginMenu("View")) {
-                for (int i = 0; i < IM_ARRAYSIZE(views); i++) {
-                    ImGui::RadioButton(views[i].name, &editor::view, i);
-                }
-
+                editor::views.ImguiRadioList();
                 ImGui::EndMenu();
             }
 
-            if (ImGui::BeginMenu("Window")) {
-                for (int i = 0; i < IM_ARRAYSIZE(windows); i++) {
-                    if (windows[i].separator) {
-                        ImGui::Separator();
-                    }
+            if (ImGui::BeginMenu("Windows")) {
+                // for (int i = 0; i < IM_ARRAYSIZE(windows); i++) {
+                //     if (windows[i].separator) {
+                //         ImGui::Separator();
+                //     }
 
-                    if (ImGui::MenuItem(windows[i].name, "", windows[i].imgui_window)) { windows[i].imgui_window = !windows[i].imgui_window; }
-                }
+                //     if (ImGui::MenuItem(windows[i].name, "", windows[i].imgui_window)) { windows[i].imgui_window = !windows[i].imgui_window; }
+                // }
 
-                ImGui::Separator();
+                // ImGui::Separator();
 
-                if (ImGui::MenuItem("Imgui demo Window", "", window_demo)) { window_demo = !window_demo; }
+                // if (ImGui::MenuItem("Imgui demo Window", "", window_demo)) { window_demo = !window_demo; }
 
-                ImGui::Separator();
+                // ImGui::Separator();
 
-                if (ImGui::MenuItem("Reset workplace", "CTRL+R")) { position_windows = true; }
+                // if (ImGui::MenuItem("Reset workplace", "CTRL+R")) { position_windows = true; }
 
                 ImGui::EndMenu();
             }
@@ -92,8 +89,9 @@ namespace ui {
                 camera::Center();
             }
 
-            ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize(views[editor::view].name).x - 30);
-            ImGui::Text(views[editor::view].name);
+            std::string active_view = editor::views.GetActiveName();
+            ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize(active_view.c_str()).x - 30);
+            ImGui::Text(active_view.c_str());
 
             ImGui::EndMainMenuBar();
         }
@@ -111,64 +109,64 @@ namespace ui {
         float screen_width = GetScreenWidth();
         float screen_height = GetScreenHeight();
 
-        for (int i = 0; i < IM_ARRAYSIZE(windows); i++) {
-            if (windows[i].imgui_window) {
-                if (position_windows) {
-                    // TODO: (this is reset window positions) hide + show all windows that you want
+        // for (int i = 0; i < IM_ARRAYSIZE(windows); i++) {
+        //     if (windows[i].imgui_window) {
+        //         if (position_windows) {
+        //             // TODO: (this is reset window positions) hide + show all windows that you want
 
-                    const float toolbar_height = 25;
-                    const float width = 300;
+        //             const float toolbar_height = 25;
+        //             const float width = 300;
 
-                    float x = screen_width - width;
-                    float y = 0;
-                    float w = width;
-                    float h = 0;
+        //             float x = screen_width - width;
+        //             float y = 0;
+        //             float w = width;
+        //             float h = 0;
 
-                    switch (windows[i].workplace_position) {
-                        case 0:
-                            x = 0;
-                            y = toolbar_height;
-                            h = 350;
-                            break;
+        //             switch (windows[i].workplace_position) {
+        //                 case 0:
+        //                     x = 0;
+        //                     y = toolbar_height;
+        //                     h = 350;
+        //                     break;
                         
-                        case 1:
-                            x = 0;
-                            y = toolbar_height + 350;
-                            h = screen_height - 350 - toolbar_height;
-                            break;
+        //                 case 1:
+        //                     x = 0;
+        //                     y = toolbar_height + 350;
+        //                     h = screen_height - 350 - toolbar_height;
+        //                     break;
 
-                        case 2:
-                            y = toolbar_height;
-                            h = 200;
-                            break;
+        //                 case 2:
+        //                     y = toolbar_height;
+        //                     h = 200;
+        //                     break;
 
-                        case 3:
-                            y = toolbar_height + 200;
-                            h = 200;
-                            break;
+        //                 case 3:
+        //                     y = toolbar_height + 200;
+        //                     h = 200;
+        //                     break;
 
-                        case 4:
-                            y = toolbar_height + 200 + 200;
-                            h = 200;
-                            break;
+        //                 case 4:
+        //                     y = toolbar_height + 200 + 200;
+        //                     h = 200;
+        //                     break;
 
-                        case 5:
-                            y = toolbar_height + 200 + 200 + 200;
-                            h = screen_height - toolbar_height - 200 - 200 - 200;
-                            break;
-                    }
+        //                 case 5:
+        //                     y = toolbar_height + 200 + 200 + 200;
+        //                     h = screen_height - toolbar_height - 200 - 200 - 200;
+        //                     break;
+        //             }
 
-                    if (y != 0) {
-                        ImGui::SetNextWindowPos({ x, y });
-                        ImGui::SetNextWindowSize({ w, h });
-                    }
-                }
+        //             if (y != 0) {
+        //                 ImGui::SetNextWindowPos({ x, y });
+        //                 ImGui::SetNextWindowSize({ w, h });
+        //             }
+        //         }
 
-                ImGui::Begin(windows[i].name, &windows[i].imgui_window, window_flags | windows[i].flags);
-                WINDOWS_IMGUI(i);
-                ImGui::End();
-            }
-        }
+        //         ImGui::Begin(windows[i].name, &windows[i].imgui_window, window_flags | windows[i].flags);
+        //         if (windows[i].imgui != nullptr) windows[i].imgui();
+        //         ImGui::End();
+        //     }
+        // }
 
         if (position_windows) {
             position_windows = false;

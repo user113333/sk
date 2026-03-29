@@ -1,1 +1,4 @@
 - Replace JSON save format with FlatBuffer (store images in the export)
+- Add namespace for each folder
+- Static classes only for util/, imgui/
+- Change all .h to .hpp

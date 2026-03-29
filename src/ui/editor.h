@@ -3,7 +3,8 @@
 #include <raylib.h>
 #include <string>
 
-#include "animation_t.h"
+#include "editor/animation_t.h"
+#include "ui/views.hpp"
 
 namespace editor {
     void initialize();
@@ -34,7 +35,7 @@ namespace editor {
     // VARS
     inline bool bg_with_frames = false;
     inline bool precise_select = true;
-    inline int view = 0;
+    inline Views views;
 
     inline bool display_points = true;
 }

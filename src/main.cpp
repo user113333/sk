@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "imgui/imgui_layer.h"
-#include "editor/editor.h"
+#include "ui/editor.h"
 #include "util/util.h"
 #include "core.h"
 
@@ -26,7 +26,6 @@ int main(int, char**)
 
     while (!WindowShouldClose()) {
         frame_count++;
-        camera::update();
         mouse::update();
         editor::update();
         if (frame_count == 2) {

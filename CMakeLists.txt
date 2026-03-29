@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.12)
 project(sk)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF) # avoid compiler-specific modes like gnu++20
 set(CMAKE_SUPPRESS_REGENERATION ON)
 
 add_compile_definitions(NO_FONT_AWESOME)

@@ -7,7 +7,7 @@
 #include <cmath>
 #include <stdio.h>
 
-#include "editor.h"
+#include "ui/editor.h"
 #include "util/util.h"
 #include "foreground_dest.h"
 #include "views/foreground.h"

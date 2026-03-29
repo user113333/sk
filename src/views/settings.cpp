@@ -1,6 +1,6 @@
 #include <imgui.h>
 
-#include "editor/editor.h"
+#include "ui/editor.h"
 #include "util/ini.h"
 
 #define INI_FILE_NAME "sk.ini"

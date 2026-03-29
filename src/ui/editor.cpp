@@ -9,10 +9,12 @@
 #include <sstream>
 
 #include "core.h"
-#include "views/views.h"
+#include "ui/views.hpp"
 #include "util/util.h"
 #include "imgui/imgui_modal.h"
 #include "util/parson.h"
+#include "views/shortcuts.h"
+#include "views/foreground.h"
 
 namespace editor {
 
@@ -43,7 +45,7 @@ namespace editor {
             UnloadDroppedFiles(files);
         }
 
-        VIEWS_UPDATE(view);
+        views.Update();
     }
 
     void render() {
@@ -51,7 +53,8 @@ namespace editor {
         animations[animations_selected]->background_render();
 
         // Render points
-        animations[animations_selected]->render_points(view == 2);
+        // TODO
+        // animations[animations_selected]->render_points(view == 2);
 
         // Render center
         DrawRectangle(-2, -8, 4, 16, COLOR_WHITE50);
@@ -64,7 +67,7 @@ namespace editor {
         animations[animations_selected]->foreground_render();
 
         // Render view
-        VIEWS_RENDER(view);
+        views.Render();
     }
 
     void imgui() {
