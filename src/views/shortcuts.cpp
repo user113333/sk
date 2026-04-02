@@ -97,9 +97,9 @@ namespace shortcuts {
         //     }
         // }
 
-        if (PRESSED(KEY_R)) {
-            ui::position_windows = true;
-        }
+        // if (PRESSED(KEY_R)) {
+        //     ui::position_windows = true;
+        // }
     }
 
     void imgui() {

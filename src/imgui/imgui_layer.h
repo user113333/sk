@@ -1,9 +1,15 @@
 #pragma once
 
-namespace imgui_layer {
-    void initialize();
-    void update();
-    void destroy();
+#include "imgui_modal.h"
 
-    bool mouse_locked();
+namespace imgui_layer {
+    void Initialize();
+    void Begin();
+    void End();
+    void Destroy();
+
+    bool IsMouseLocked();
+
+    inline ImGuiModal Modal;
+    inline bool ImguiDemoWindowOpen = false;
 }

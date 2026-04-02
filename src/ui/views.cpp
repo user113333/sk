@@ -10,7 +10,7 @@ void Views::Update()
 {
     switch (m_active) {
         case VIEW_CAMERA:
-            if (imgui_layer::mouse_locked()) break;
+            if (imgui_layer::IsMouseLocked()) break;
             camera::UpdateUserMouseInteraction();
             break;
     }

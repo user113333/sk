@@ -1,11 +1,15 @@
 #pragma once
 
+#include "windows.hpp"
 #include "imgui/imgui_modal.h"
 
-namespace ui {
-    inline ImGuiModal Modal;
-    inline bool window_demo = false;
-    inline bool position_windows = false;
+class Ui {
+public:
+    void Update();
     
-    void update();
-}
+private:
+    void OpenFile();
+    void DrawMainMenu();
+
+    Windows m_windows;
+};

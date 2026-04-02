@@ -27,14 +27,7 @@ void Background::Render()
 
 void Background::Imgui()
 {
-    if (ImGui::BeginMenuBar()) {
-        if (ImGui::MenuItem("Load new")) {
-            ui::Modal.OpenFileRead("Load background: ", {"GIF files (.gif)", "*.gif"}, [this](std::string path){
-                this->Load(path);
-            });
-        }
-        ImGui::EndMenuBar();
-    }
+    
 }
 
 void Background::Load(std::string path)

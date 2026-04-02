@@ -26,7 +26,7 @@ namespace mouse {
     }
 
     bool is_locked() {
-        return imgui_layer::mouse_locked();
+        return imgui_layer::IsMouseLocked();
     }
 
     bool is_down() {

@@ -5,6 +5,7 @@
 #include <raylib.h>
 
 class Background {
+    friend class BackgroundWindow;
 public:
     void Next();
     void Prev();
