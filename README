@@ -11,7 +11,8 @@ Src structure
     
     src/ui
         ui: imgui elements
-        windows: imgui windows, needs lib/.. (friend class Windows)
+        windows: namespace Sk::!
+            imgui windows, needs lib/..
 
     src/util -> Global static helpers for Raylib
 

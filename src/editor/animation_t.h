@@ -5,7 +5,7 @@
 #include <vec3.hpp>
 #include <vec4.hpp>
 #include "foreground_t.h"
-#include "background.h"
+#include "background.hpp"
 #include "play_t.h"
 
 #define ANIMATION_NAME_LENGTH 50
@@ -98,4 +98,4 @@ private:
 };
 
 inline foreground_t animation_foreground;
-inline Background animation_background;
+inline Sk::Background animation_background;

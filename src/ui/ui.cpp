@@ -76,7 +76,7 @@ void Ui::DrawMainMenu()
 
         std::string active_view = editor::views.GetActiveName();
         ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize(active_view.c_str()).x - 30);
-        ImGui::Text(active_view.c_str());
+        ImGui::Text("%s", active_view.c_str());
 
         ImGui::EndMainMenuBar();
     }

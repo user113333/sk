@@ -1,36 +1,36 @@
-#include "background.h"
+#include "background.hpp"
 
 #include <imgui.h>
 #include <raylib.h>
 
 #include "ui/ui.h"
 
-void Background::Next()
+void Sk::Background::Next()
 {
 
 }
 
-void Background::Prev()
+void Sk::Background::Prev()
 {
 
 }
 
-void Background::Update()
+void Sk::Background::Update()
 {
 
 }
 
-void Background::Render()
+void Sk::Background::Render()
 {
     DrawTexture(m_texture, 0, 0, WHITE);
 }
 
-void Background::Imgui()
+void Sk::Background::Imgui()
 {
     
 }
 
-void Background::Load(std::string path)
+void Sk::Background::Load(std::string path)
 {
     int frames;
     Image img = LoadImageAnim(path.c_str(), &frames);

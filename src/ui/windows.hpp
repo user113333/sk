@@ -11,7 +11,7 @@ public:
     void ImguiCheckList();
 
 private:
-    BackgroundWindow m_background_window;
+    Sk::BackgroundWindow m_background_window;
     // const std::vector<std::string> m_window_names = {
     //     "Master window",
     //     "Points window",
