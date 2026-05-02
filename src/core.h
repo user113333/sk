@@ -11,6 +11,3 @@
 #define COLOR_WHITE Color{ 255, 255, 255, 255 }
 #define COLOR_WHITE50 Color{ 255, 255, 255, 100 }
 #define COLOR_BLACK Color{ 35, 39, 42, 255 }
-
-inline Texture2D texture_point;
-inline Font font_main;

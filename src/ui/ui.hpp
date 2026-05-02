@@ -2,14 +2,16 @@
 
 #include "windows.hpp"
 #include "imgui/imgui_modal.h"
+#include "lib/pack.hpp"
+#include "../editor/modes.hpp"
 
 class Ui {
 public:
-    void Update();
+    void Update(Sk::Pack &pack);
     
 private:
     void OpenFile();
-    void DrawMainMenu();
+    void DrawMainMenu(Sk::Pack &pack);
 
     Windows m_windows;
 };

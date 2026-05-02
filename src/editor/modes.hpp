@@ -1,22 +1,24 @@
 #pragma once
 
 #include <string>
-#include <array>
+#include <vector>
 
-enum VIEW {
-    VIEW_CAMERA = 0
+enum MODE {
+    MODE_CAMERA
 };
 
-class Views {
+class Modes {
 public:
     void Update();
     void Render();
 
-    void ImguiRadioList();
+    std::vector<std::string> GetNames();
+    int GetActiveIndex();
+    void SetActiveIndex(int i);
     std::string GetActiveName();
 private:
     int m_active = 0;
-    const std::array<std::string, 6> m_view_names = {
+    std::vector<std::string> m_names = {
         "Camera view",
         "Points view",
         "Z oreder view",

@@ -8,6 +8,6 @@
 namespace Sk {
     struct Pack {
         std::vector<Animation> Animations;
-        Background Background;
+        Sk::Background Background;
     };
 }

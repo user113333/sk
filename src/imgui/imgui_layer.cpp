@@ -6,7 +6,7 @@
 #include "external/imgui_impl_raylib.h"
 #include "external/rlImGui.h"
 #include "imgui_modal.h"
-#include "ui/ui.h"
+#include "ui/ui.hpp"
 
 namespace imgui_layer {
 

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "ui/ui.h"
+#include "ui/ui.hpp"
+#include "lib/pack.hpp"
 
 class Program {
 public:
@@ -8,4 +9,5 @@ public:
 
 private:
     Ui m_ui;
+    Sk::Pack m_pack;
 };

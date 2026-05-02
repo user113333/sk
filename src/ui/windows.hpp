@@ -4,10 +4,11 @@
 #include <string>
 
 #include "window/background_window.hpp"
+#include "lib/pack.hpp"
 
 class Windows {
 public:
-    void DrawImgui();
+    void DrawImgui(Sk::Pack &pack);
     void ImguiCheckList();
 
 private:

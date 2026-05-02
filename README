@@ -5,12 +5,12 @@ Src structure
     src/lib
         pack: multiple animations
 
-    src/editor
-        editor: interaction with main picture, needs pack
+    src/editor: uses raylib
+        editor: 
         modes: different editing modes
     
-    src/ui
-        ui: imgui elements
+    src/ui: uses imgui
+        ui: 
         windows: namespace Sk::!
             imgui windows, needs lib/..
 

@@ -40,7 +40,7 @@ void Program::Run()
         EndMode2D();
 
         imgui_layer::Begin();
-        m_ui.Update();
+        m_ui.Update(m_pack);
         imgui_layer::End();
         
         EndDrawing();

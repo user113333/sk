@@ -2,12 +2,14 @@
 
 #include <imgui.h>
 
-#include "editor.h"
 #include "imgui/imgui_layer.h"
+#include "lib/pack.hpp"
 
-void Windows::DrawImgui()
+using namespace Sk;
+
+void Windows::DrawImgui(Pack &pack)
 {
-    m_background_window.ImGuiWindow(animation_background);
+    m_background_window.ImGuiWindow(pack.Background);
 }
 
 void Windows::ImguiCheckList()

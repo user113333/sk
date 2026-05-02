@@ -3,8 +3,6 @@
 #include <imgui.h>
 #include <raylib.h>
 
-#include "ui/ui.h"
-
 void Sk::Background::Next()
 {
 
