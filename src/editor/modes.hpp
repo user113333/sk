@@ -19,11 +19,11 @@ public:
 private:
     int m_active = 0;
     std::vector<std::string> m_names = {
-        "Camera view",
-        "Points view",
-        "Z oreder view",
-        "Foreground view",
-        "Ground view",
-        "Background view"
+        "Camera mode",
+        "Points mode",
+        "Z oreder mode",
+        "Foreground mode",
+        "Ground mode",
+        "Background mode"
     };
 };

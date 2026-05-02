@@ -14,8 +14,4 @@ void Windows::DrawImgui(Pack &pack)
 void Windows::ImguiCheckList()
 {
     m_background_window.ImGuiCheckbox();
-
-    ImGui::Separator();
-
-    ImGui::Checkbox("Imgui Demo Window", &imgui_layer::ImguiDemoWindowOpen);
 }

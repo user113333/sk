@@ -13,6 +13,4 @@ namespace imgui_layer {
     bool IsMouseLocked();
 
     std::optional<char*> DrawModalFileRead(char* modal_name, char* message, std::vector<std::string> filters);
-
-    inline bool ImguiDemoWindowOpen = false;
 }

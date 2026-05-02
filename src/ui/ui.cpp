@@ -44,6 +44,8 @@ void Ui::DrawMainMenu(Pack &pack, Modes &modes)
 
         if (ImGui::BeginMenu("Windows")) {
             m_windows.ImguiCheckList();
+            ImGui::Separator();
+            ImGui::Checkbox("Imgui Demo Window", &m_imgui_demo_open);
 
             ImGui::EndMenu();
         }
@@ -78,9 +80,9 @@ void Ui::DrawMainMenu(Pack &pack, Modes &modes)
             // camera::Center();
         }
 
-        // std::string active_view = editor::views.GetActiveName();
-        // ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize(active_view.c_str()).x - 30);
-        // ImGui::Text("%s", active_view.c_str());
+        std::string active_view = modes.GetActiveName();
+        ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::CalcTextSize(active_view.c_str()).x - 15);
+        ImGui::Text("%s", active_view.c_str());
 
         ImGui::EndMainMenuBar();
     }
@@ -89,4 +91,7 @@ void Ui::DrawMainMenu(Pack &pack, Modes &modes)
 void Ui::Update(Pack &pack, Modes &modes) {
     DrawMainMenu(pack, modes);
     m_windows.DrawImgui(pack);
+    if (m_imgui_demo_open) {
+        ImGui::ShowDemoWindow(&m_imgui_demo_open);
+    }
 }

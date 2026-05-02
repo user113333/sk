@@ -13,4 +13,5 @@ private:
     void DrawMainMenu(Sk::Pack &pack, Modes &modes);
 
     Windows m_windows;
+    bool m_imgui_demo_open = false;
 };
