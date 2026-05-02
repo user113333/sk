@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <raylib.h>
 
-#include "imgui/imgui_layer.h"
+#include "imgui/imgui_layer.hpp"
 #include "camera.h"
 
 namespace mouse {

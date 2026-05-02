@@ -1,17 +1,16 @@
 #pragma once
 
 #include "windows.hpp"
-#include "imgui/imgui_modal.h"
 #include "lib/pack.hpp"
 #include "../editor/modes.hpp"
 
 class Ui {
 public:
-    void Update(Sk::Pack &pack);
+    void Update(Sk::Pack &pack, Modes &modes);
     
 private:
     void OpenFile();
-    void DrawMainMenu(Sk::Pack &pack);
+    void DrawMainMenu(Sk::Pack &pack, Modes &modes);
 
     Windows m_windows;
 };

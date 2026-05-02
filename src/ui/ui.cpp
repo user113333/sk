@@ -4,7 +4,7 @@
 #include <string>
 
 #include "lib/pack.hpp"
-#include "imgui/imgui_layer.h"
+#include "imgui/imgui_layer.hpp"
 
 using namespace Sk;
 
@@ -13,7 +13,7 @@ void Ui::OpenFile()
     // imgui_layer::Modal.OpenFileRead("Import file path: ", {"JSON files (.json .sk)", "*.json *.sk", "All Files", "*"}, pack.);
 }
 
-void Ui::DrawMainMenu(Pack &pack)
+void Ui::DrawMainMenu(Pack &pack, Modes &modes)
 {
     if (ImGui::IsKeyChordPressed(ImGuiMod_Ctrl | ImGuiKey_O)) {
         OpenFile();
@@ -24,17 +24,21 @@ void Ui::DrawMainMenu(Pack &pack)
             // if (ImGui::MenuItem("New")) { imgui_layer::Modal.OpenYesNo("All the unsaved changes will be lost! Are you sure you want to continue?", editor::create_new); }
             ImGui::Separator();
             if (ImGui::MenuItem("Open..", "Ctrl+O")) {
-                OpenFile();   
+                OpenFile();
             }
             // if (ImGui::MenuItem("Save..", "CTRL+S")) { modal::open("Export file path: ", "out", editor::export_file, MODAL_TYPE_FILE_SAVE); }
 
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("View")) {
-            // for (int i = 0; i < m_view_names.size(); i++) {
-            //     ImGui::RadioButton(m_view_names[i].c_str(), &m_active, i);
-            // }
+        if (ImGui::BeginMenu("Modes")) {
+            std::vector mode_names = modes.GetNames();
+            int active = modes.GetActiveIndex();
+            for (int i = 0; i < mode_names.size(); i++) {
+                if (ImGui::RadioButton(mode_names[i].c_str(), active == i)) {
+                    modes.SetActiveIndex(i);
+                }
+            }
             ImGui::EndMenu();
         }
 
@@ -82,13 +86,7 @@ void Ui::DrawMainMenu(Pack &pack)
     }
 }
 
-void Ui::Update(Pack &pack) {
-    DrawMainMenu(pack);
+void Ui::Update(Pack &pack, Modes &modes) {
+    DrawMainMenu(pack, modes);
     m_windows.DrawImgui(pack);
-
-    // Maybe put these two into imgui_layer?
-    imgui_layer::Modal.Draw();
-    if (imgui_layer::ImguiDemoWindowOpen) {
-        ImGui::ShowDemoWindow(&imgui_layer::ImguiDemoWindowOpen);
-    }
 }

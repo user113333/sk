@@ -1,6 +1,8 @@
 #pragma once
 
-#include "imgui_modal.h"
+#include <optional>
+#include <vector>
+#include <string>
 
 namespace imgui_layer {
     void Initialize();
@@ -10,6 +12,7 @@ namespace imgui_layer {
 
     bool IsMouseLocked();
 
-    inline ImGuiModal Modal;
+    std::optional<char*> DrawModalFileRead(char* modal_name, char* message, std::vector<std::string> filters);
+
     inline bool ImguiDemoWindowOpen = false;
 }

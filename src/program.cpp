@@ -4,7 +4,7 @@
 
 #include "util/camera.h"
 #include "util/mouse.h"
-#include "imgui/imgui_layer.h"
+#include "imgui/imgui_layer.hpp"
 
 void SecondUpdate()
 {
@@ -28,7 +28,7 @@ void Program::Run()
     while (!WindowShouldClose()) {
         frame_count++;
         mouse::update();
-        // editor::update();
+        m_editor.Update(m_pack);
         if (frame_count == 2) {
             SecondUpdate();
         }
@@ -36,11 +36,11 @@ void Program::Run()
         BeginDrawing();
         ClearBackground(BLACK);
         BeginMode2D(camera::camera);
-        // editor::render();
+        m_editor.Render(m_pack);
         EndMode2D();
 
         imgui_layer::Begin();
-        m_ui.Update(m_pack);
+        m_ui.Update(m_pack, m_editor.GetModes());
         imgui_layer::End();
         
         EndDrawing();
