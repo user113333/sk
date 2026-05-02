@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "animation.hpp"
+#include "background.hpp"
 
 namespace Sk {
     struct Pack {

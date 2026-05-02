@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 
-#include "editor/background.hpp"
+#include "lib/background.hpp"
 #include "window.hpp"
 #include "imgui/imgui_layer.h"
 
